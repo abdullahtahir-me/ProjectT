@@ -21,8 +21,8 @@ public class Projectile {
     private float startX;
     private float startY;
 
-    private float positionX;
-    private float positionY;
+    private float positionX;//will use this
+    private float positionY;// will use this
 
     public float getPositionX() {
         return positionX;
@@ -41,16 +41,16 @@ public class Projectile {
     }
 
     private float totalTime = 0;
-    public void update(float deltaTime) {
-        positionX = startX + (float) (initialVelocity * Math.cos(angleRadian)*totalTime);
-        positionY = (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * totalTime)-(0.5*G*totalTime*totalTime));
+    public void update(float deltaTime) { // When it is callled it fires and update projectile
+        positionX = startX + (float) (initialVelocity * Math.cos(angleRadian)*totalTime);//x position at i elapsed time
+        positionY = (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * totalTime)-(0.5*G*totalTime*totalTime));//y position at i elapsed time
         totalTime += deltaTime;
     }
     public boolean isOutOfBounds() {
         if (positionY<0) return true;
         return false;
     }
-
+// Code for the bullet trail now
     public float calculateFlightTime() {
         return  (float)(2*initialVelocity*Math.sin(angleRadian))/G;
     }

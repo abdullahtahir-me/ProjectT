@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -26,6 +28,13 @@ public class Main extends ApplicationAdapter {
     Slider initialVelocitySlider;
     TextButton textButton;
     private boolean fire=false;
+    private SpriteBatch batch;
+    private Texture image;
+
+    Texture skyBackground;
+
+    Terrain terrain;
+    Player player1;
 
 
     @Override
@@ -90,6 +99,14 @@ public class Main extends ApplicationAdapter {
         stage.addActor(initialVelocityText);
         stage.addActor(initialVelocitySlider);
         stage.addActor(textButton);
+        terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
+
+        batch = new SpriteBatch();
+        image = new Texture("libgdx.png");
+        player1 = new Player(500,25,25,1,new Texture("daniel.png"), terrain.getHeightMap());
+
+        int randomBackgroundChooser = MathUtils.random(1,60);
+        skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
 
     }
 
@@ -97,10 +114,24 @@ public class Main extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1);
+        batch.begin();
+        batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(terrain.terrainTexture, 0, 0);
+        batch.draw(
+            new TextureRegion(player1.getPicture())
+            , player1.getPosX(), player1.getPosY(),
+            0, 0,
+            player1.getWidth(), player1.getHeight()
+            , 1, 1,
+            player1.angle * MathUtils.radiansToDegrees);
+        batch.end();
+
+        player1.playerMove(Direction.LEFT);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         trailGenerator();
-        fire();
+        fireProjectile();
         shapeRenderer.end();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -108,7 +139,7 @@ public class Main extends ApplicationAdapter {
 
     }
 
-    public void fire(){
+    public void fireProjectile(){
         if(fire) {
 
             projectile.update(Gdx.graphics.getDeltaTime()*3);
@@ -128,6 +159,8 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        image.dispose();
         shapeRenderer.dispose();
         stage.dispose();
         skin.dispose();
