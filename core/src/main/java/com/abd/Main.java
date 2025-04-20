@@ -39,8 +39,17 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
+        terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
+
+        batch = new SpriteBatch();
+        image = new Texture("libgdx.png");
+        player1 = new Player(500,25,25,1,new Texture("daniel.png"), terrain.getHeightMap());
+
+        int randomBackgroundChooser = MathUtils.random(1,60);
+        skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
-        projectile = new Projectile("Projectile 1",10,45,30,8,13);
+        System.out.println(player1.getPosX());
+        projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX() /10, (float) player1.getPosY() /10);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/cleanCrispy/clean-crispy-ui.json"));
@@ -99,14 +108,6 @@ public class Main extends ApplicationAdapter {
         stage.addActor(initialVelocityText);
         stage.addActor(initialVelocitySlider);
         stage.addActor(textButton);
-        terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
-
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
-        player1 = new Player(500,25,25,1,new Texture("daniel.png"), terrain.getHeightMap());
-
-        int randomBackgroundChooser = MathUtils.random(1,60);
-        skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
 
     }
 
@@ -126,8 +127,9 @@ public class Main extends ApplicationAdapter {
             player1.angle * MathUtils.radiansToDegrees);
         batch.end();
 
-        player1.playerMove(Direction.LEFT);
-
+        player1.playerMove(Direction.RIGHT);
+        projectile.setStartX((float) player1.getPosX() /10);
+        projectile.setStartY((float) player1.getPosY() /10);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         trailGenerator();

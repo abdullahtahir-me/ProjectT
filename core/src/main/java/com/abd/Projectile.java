@@ -8,6 +8,15 @@ public class Projectile {
 
     private String name;
     private float power;
+
+    public void setStartX(float startX) {
+        this.startX = startX;
+    }
+
+    public void setStartY(float startY) {
+        this.startY = startY;
+    }
+
     private float angleRadian;
     private float initialVelocity;
 
