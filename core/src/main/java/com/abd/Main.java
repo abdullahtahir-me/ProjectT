@@ -111,7 +111,7 @@ public class Main extends ApplicationAdapter {
     public void fire(){
         if(fire) {
 
-            projectile.update(Gdx.graphics.getDeltaTime());
+            projectile.update(Gdx.graphics.getDeltaTime()*3);
             if (projectile.isOutOfBounds()) projectile.reset();
             float drawX = projectile.getPositionX() * 10;
             float drawY = projectile.getPositionY() * 10;
