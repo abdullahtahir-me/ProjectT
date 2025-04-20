@@ -4,11 +4,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Projectile {
     private float G = 9.8f;
+    public boolean trail=false;
 
     private String name;
     private float power;
     private float angleRadian;
     private float initialVelocity;
+
+    public void setInitialVelocity(float initialVelocity) {
+        this.initialVelocity = initialVelocity;
+    }
+    public void setAngleRadian(float angleDegrees) {
+        this.angleRadian = (float)Math.toRadians(angleDegrees);
+    }
 
     private float startX;
     private float startY;
@@ -54,16 +62,19 @@ public class Projectile {
     }
 
     public void render(ShapeRenderer shapeRenderer) {
-        float flightTime = calculateFlightTime();
+        if (trail) {
+            float flightTime = calculateFlightTime();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.circle(calculateX(flightTime*0.05f),calculateY(flightTime*0.05f),10);
-        shapeRenderer.circle(calculateX(flightTime*0.1f),calculateY(flightTime*0.1f),10);
-        shapeRenderer.circle(calculateX(flightTime*0.15f),calculateY(flightTime*0.15f),10);
-        shapeRenderer.circle(calculateX(flightTime*0.2f),calculateY(flightTime*0.2f),10);
-        shapeRenderer.end();
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(1, 0, 0, 1);
+            shapeRenderer.circle(calculateX(flightTime * 0.05f), calculateY(flightTime * 0.05f), 10);
+            shapeRenderer.circle(calculateX(flightTime * 0.1f), calculateY(flightTime * 0.1f), 10);
+            shapeRenderer.circle(calculateX(flightTime * 0.15f), calculateY(flightTime * 0.15f), 10);
+            shapeRenderer.circle(calculateX(flightTime * 0.2f), calculateY(flightTime * 0.2f), 10);
+            shapeRenderer.end();
+        }
     }
+
 
     public void reset(){
         positionX = 0;
