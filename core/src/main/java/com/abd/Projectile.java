@@ -30,14 +30,14 @@ public class Projectile {
     private float startX;
     private float startY;
 
-    private float positionX;//will use this
-    private float positionY;// will use this
+    private float currentPositionX;//will use this
+    private float currentPositionY;// will use this
 
-    public float getPositionX() {
-        return positionX;
+    public float getCurrentPositionX() {
+        return currentPositionX;
     }
-    public float getPositionY() {
-        return positionY;
+    public float getCurrentPositionY() {
+        return currentPositionY;
     }
 
     public Projectile(String name, float power, float angleDegree, float initialVelocity, float startX, float startY) {
@@ -51,23 +51,33 @@ public class Projectile {
 
     private float totalTime = 0;
     public void update(float deltaTime) { // When it is callled it fires and update projectile
-        positionX = startX + (float) (initialVelocity * Math.cos(angleRadian)*totalTime);//x position at i elapsed time
-        positionY = (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * totalTime)-(0.5*G*totalTime*totalTime));//y position at i elapsed time
+        currentPositionX = startX + (float) (initialVelocity * Math.cos(angleRadian)*totalTime);//x position at i elapsed time
+        currentPositionY = (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * totalTime)-(0.5*G*totalTime*totalTime));//y position at i elapsed time
         totalTime += deltaTime;
     }
-    public boolean isOutOfBounds() {
-        if (positionY<0) return true;
-        return false;
+    public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
+
+        if (currentPositionY <0|| currentPositionX <=0 ||currentPositionX >= heightMap.length - 1) {
+            return true;
+        }
+        else if((int)heightMap[(int)currentPositionX]-10>=(int)currentPositionY){
+            System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
+            return  true;
+        }
+        System.out.println("current position ("+currentPositionX + " , " + currentPositionY+" )");
+        System.out.println("current position at height map ("+heightMap[(int) currentPositionX]  );
+
+        return false;//
     }
 // Code for the bullet trail now
     public float calculateFlightTime() {
         return  (float)(2*initialVelocity*Math.sin(angleRadian))/G;
     }
     public float calculateX(float time){
-        return (startX + (float) (initialVelocity * Math.cos(angleRadian)*time))*10;
+        return (startX + (float) (initialVelocity * Math.cos(angleRadian)*time));
     }
     public float calculateY(float time){
-        return (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * time)-(0.5*G*time*time))*10;
+        return (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * time)-(0.5*G*time*time));
     }
 
     public void render(ShapeRenderer shapeRenderer) {
@@ -76,18 +86,18 @@ public class Projectile {
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(1, 0, 0, 1);
-            shapeRenderer.circle(calculateX(flightTime * 0.05f), calculateY(flightTime * 0.05f), 10);
-            shapeRenderer.circle(calculateX(flightTime * 0.1f), calculateY(flightTime * 0.1f), 10);
-            shapeRenderer.circle(calculateX(flightTime * 0.15f), calculateY(flightTime * 0.15f), 10);
-            shapeRenderer.circle(calculateX(flightTime * 0.2f), calculateY(flightTime * 0.2f), 10);
+            shapeRenderer.circle(calculateX(flightTime * 0.05f), calculateY(flightTime * 0.05f), 5);
+            shapeRenderer.circle(calculateX(flightTime * 0.1f), calculateY(flightTime * 0.1f), 5);
+            shapeRenderer.circle(calculateX(flightTime * 0.15f), calculateY(flightTime * 0.15f), 5);
+            shapeRenderer.circle(calculateX(flightTime * 0.2f), calculateY(flightTime * 0.2f), 5);
             shapeRenderer.end();
         }
     }
 
 
     public void reset(){
-        positionX = 0;
-        positionY = 0;
+        currentPositionX = 0;
+        currentPositionY = 0;
         totalTime = 0;
     }
 }

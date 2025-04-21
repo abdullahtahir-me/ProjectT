@@ -36,12 +36,7 @@ public class Terrain {
         return heightMap[index];
 
     }
-
-
-
-
-
-
+    
     public Terrain(int pixmapWidth, int PixmapHeight,float upperHeight ){
         this.pixmapWidth = pixmapWidth;
         this.PixmapHeight = PixmapHeight;

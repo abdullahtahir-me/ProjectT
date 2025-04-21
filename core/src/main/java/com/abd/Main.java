@@ -12,7 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 
@@ -39,6 +40,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
+
         terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
 
         batch = new SpriteBatch();
@@ -49,8 +51,9 @@ public class Main extends ApplicationAdapter {
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
         System.out.println(player1.getPosX());
-        projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX() /10, (float) player1.getPosY() /10);
-        stage = new Stage();
+        projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX()  , (float) player1.getPosY() + player1.getHeight());
+        stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/cleanCrispy/clean-crispy-ui.json"));
 
@@ -59,7 +62,7 @@ public class Main extends ApplicationAdapter {
         angleText.setSize(200, 40);
         angleText.setPosition(Gdx.graphics.getWidth()-250, 350);
 
-        angleSlider = new Slider(0, 90, 1f, false, skin);
+        angleSlider = new Slider(0, 180, 1f, false, skin);
         angleSlider.setSize(200, 40);
         angleSlider.setPosition(Gdx.graphics.getWidth()-250, 300);
 
@@ -127,9 +130,9 @@ public class Main extends ApplicationAdapter {
             player1.angle * MathUtils.radiansToDegrees);
         batch.end();
 
-        player1.playerMove(Direction.RIGHT);
-        projectile.setStartX((float) player1.getPosX() /10);
-        projectile.setStartY((float) player1.getPosY() /10);
+        player1.playerMove(Direction.LEFT);
+        projectile.setStartX((float) player1.getPosX());
+        projectile.setStartY((float) player1.getPosY());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         trailGenerator();
@@ -144,10 +147,13 @@ public class Main extends ApplicationAdapter {
     public void fireProjectile(){
         if(fire) {
 
-            projectile.update(Gdx.graphics.getDeltaTime()*3);
-            if (projectile.isOutOfBounds()) projectile.reset();
-            float drawX = projectile.getPositionX() * 10;
-            float drawY = projectile.getPositionY() * 10;
+            projectile.update(Gdx.graphics.getDeltaTime()*13);
+            if (projectile.isOutOfBounds(terrain.getHeightMap())) {
+                projectile.reset();
+                System.out.println("New projectile launched");
+            }
+            float drawX = projectile.getCurrentPositionX() ;
+            float drawY = projectile.getCurrentPositionY() ;
             shapeRenderer.circle(drawX, drawY, 10);
         }
     }
