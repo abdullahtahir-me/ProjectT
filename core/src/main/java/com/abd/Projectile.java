@@ -3,10 +3,10 @@ package com.abd;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Projectile {
-    private float G = 9.8f;
+    private final float G = 9.8f;
     public boolean trail=false;
 
-    private String name;
+    public String name;
     private float power;
 
     public void setStartX(float startX) {
@@ -50,7 +50,7 @@ public class Projectile {
     }
 
     private float totalTime = 0;
-    public void update(float deltaTime) { // When it is callled it fires and update projectile
+    public void update(float deltaTime) { // When it is called it fires and update projectile
         currentPositionX = startX + (float) (initialVelocity * Math.cos(angleRadian)*totalTime);//x position at i elapsed time
         currentPositionY = (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * totalTime)-(0.5*G*totalTime*totalTime));//y position at i elapsed time
         totalTime += deltaTime;
@@ -92,6 +92,10 @@ public class Projectile {
             shapeRenderer.circle(calculateX(flightTime * 0.2f), calculateY(flightTime * 0.2f), 5);
             shapeRenderer.end();
         }
+    }
+    @Override
+    public String toString() {
+        return name +" Lvl: " + power;
     }
 
 
