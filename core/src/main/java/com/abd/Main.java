@@ -51,7 +51,7 @@ public class Main extends ApplicationAdapter {
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
         System.out.println(player1.getPosX());
-        projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX() /10 , (float) player1.getPosY() /10+ player1.getHeight());
+        projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX()  , (float) player1.getPosY() + player1.getHeight());
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         Gdx.input.setInputProcessor(stage);
@@ -131,8 +131,8 @@ public class Main extends ApplicationAdapter {
         batch.end();
 
         player1.playerMove(Direction.LEFT);
-        projectile.setStartX((float) player1.getPosX() /10);
-        projectile.setStartY((float) player1.getPosY() /10);
+        projectile.setStartX((float) player1.getPosX());
+        projectile.setStartY((float) player1.getPosY());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         trailGenerator();
@@ -147,13 +147,13 @@ public class Main extends ApplicationAdapter {
     public void fireProjectile(){
         if(fire) {
 
-            projectile.update(Gdx.graphics.getDeltaTime()*3);
+            projectile.update(Gdx.graphics.getDeltaTime()*13);
             if (projectile.isOutOfBounds(terrain.getHeightMap())) {
                 projectile.reset();
                 System.out.println("New projectile launched");
             }
-            float drawX = projectile.getCurrentPositionX() * 10;
-            float drawY = projectile.getCurrentPositionY()  *10;
+            float drawX = projectile.getCurrentPositionX() ;
+            float drawY = projectile.getCurrentPositionY() ;
             shapeRenderer.circle(drawX, drawY, 10);
         }
     }

@@ -57,14 +57,14 @@ public class Projectile {
     }
     public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
 
-        if (currentPositionY <0|| currentPositionX*10 <=0 ||currentPositionX*10 >= heightMap.length - 1) {
+        if (currentPositionY <0|| currentPositionX <=0 ||currentPositionX >= heightMap.length - 1) {
             return true;
         }
-        else if((int)heightMap[(int)currentPositionX*10]-10>=(int)currentPositionY*10){
+        else if((int)heightMap[(int)currentPositionX]-10>=(int)currentPositionY){
             System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
             return  true;
         }
-        System.out.println("current position ("+currentPositionX *10+ " , " + currentPositionY*10+" )");
+        System.out.println("current position ("+currentPositionX + " , " + currentPositionY+" )");
         System.out.println("current position at height map ("+heightMap[(int) currentPositionX]  );
 
         return false;//
@@ -74,10 +74,10 @@ public class Projectile {
         return  (float)(2*initialVelocity*Math.sin(angleRadian))/G;
     }
     public float calculateX(float time){
-        return (startX + (float) (initialVelocity * Math.cos(angleRadian)*time))*10;
+        return (startX + (float) (initialVelocity * Math.cos(angleRadian)*time));
     }
     public float calculateY(float time){
-        return (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * time)-(0.5*G*time*time))*10;
+        return (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * time)-(0.5*G*time*time));
     }
 
     public void render(ShapeRenderer shapeRenderer) {
@@ -86,10 +86,10 @@ public class Projectile {
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(1, 0, 0, 1);
-            shapeRenderer.circle(calculateX(flightTime * 0.05f), calculateY(flightTime * 0.05f), 10);
-            shapeRenderer.circle(calculateX(flightTime * 0.1f), calculateY(flightTime * 0.1f), 10);
-            shapeRenderer.circle(calculateX(flightTime * 0.15f), calculateY(flightTime * 0.15f), 10);
-            shapeRenderer.circle(calculateX(flightTime * 0.2f), calculateY(flightTime * 0.2f), 10);
+            shapeRenderer.circle(calculateX(flightTime * 0.05f), calculateY(flightTime * 0.05f), 5);
+            shapeRenderer.circle(calculateX(flightTime * 0.1f), calculateY(flightTime * 0.1f), 5);
+            shapeRenderer.circle(calculateX(flightTime * 0.15f), calculateY(flightTime * 0.15f), 5);
+            shapeRenderer.circle(calculateX(flightTime * 0.2f), calculateY(flightTime * 0.2f), 5);
             shapeRenderer.end();
         }
     }
