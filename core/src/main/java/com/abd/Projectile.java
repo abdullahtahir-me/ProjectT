@@ -57,10 +57,10 @@ public class Projectile {
     }
     public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
 
-        if (currentPositionY <0) {
+        if (currentPositionY <0|| currentPositionX*10 <=0 ||currentPositionX*10 >= heightMap.length - 1) {
             return true;
         }
-        else if((int)heightMap[(int)currentPositionX*10]-30>=(int)currentPositionY*10){
+        else if((int)heightMap[(int)currentPositionX*10]-10>=(int)currentPositionY*10){
             System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
             return  true;
         }

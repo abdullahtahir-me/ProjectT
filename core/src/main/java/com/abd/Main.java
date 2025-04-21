@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 
@@ -50,7 +52,8 @@ public class Main extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         System.out.println(player1.getPosX());
         projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX() /10 , (float) player1.getPosY() /10+ player1.getHeight());
-        stage = new Stage();
+        stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/cleanCrispy/clean-crispy-ui.json"));
 
@@ -59,7 +62,7 @@ public class Main extends ApplicationAdapter {
         angleText.setSize(200, 40);
         angleText.setPosition(Gdx.graphics.getWidth()-250, 350);
 
-        angleSlider = new Slider(-90, 90, 1f, false, skin);
+        angleSlider = new Slider(0, 180, 1f, false, skin);
         angleSlider.setSize(200, 40);
         angleSlider.setPosition(Gdx.graphics.getWidth()-250, 300);
 
@@ -150,7 +153,7 @@ public class Main extends ApplicationAdapter {
                 System.out.println("New projectile launched");
             }
             float drawX = projectile.getCurrentPositionX() * 10;
-            float drawY = projectile.getCurrentPositionY() * 10;
+            float drawY = projectile.getCurrentPositionY()  *10;
             shapeRenderer.circle(drawX, drawY, 10);
         }
     }
