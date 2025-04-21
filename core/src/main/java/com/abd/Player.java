@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
 public class Player {
+
+    Projectile[] projectiles;
+
     private int posX;
     private int posY;
     private int width;
@@ -14,6 +17,7 @@ public class Player {
     float[] heightMap;
     float angle;
     int slopePoints= 25;
+    public int totalProjectiles=10;
 
     public Player(int posX, int width, int height,float speed, Texture picture,float[] heightMap) {
         this.posX = posX;
@@ -23,9 +27,10 @@ public class Player {
         this.speed = speed;
         this.picture = picture;
         this.heightMap = heightMap;
+        projectiles = new Projectile[totalProjectiles];
+        initializeProjectiles();
 
     }
-
     public int getPosX() {
         return posX;
     }
@@ -116,5 +121,15 @@ public class Player {
             angle = MathUtils.atan(angle);
         }
 
+ }
+
+ public void initializeProjectiles(){
+        for(int i = 0; i < totalProjectiles; i++){
+            projectiles[i] = new Projectile("Projectile"+i,10,45,30, (float) getPosX()  , (float) getPosY() + getHeight());
+            System.out.println(projectiles[i].name);
+        }
+ }
+ public void dispose(){
+        projectiles = null;
  }
 }

@@ -3,10 +3,10 @@ package com.abd;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Projectile {
-    private float G = 9.8f;
+    private final float G = 9.8f;
     public boolean trail=false;
 
-    private String name;
+    public String name;
     private float power;
 
     public void setStartX(float startX) {
