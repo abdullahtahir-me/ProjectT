@@ -38,6 +38,8 @@ public class Main extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         //projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX()  , (float) player1.getPosY() + player1.getHeight());
         gui = new GUI(player1.projectiles[1]);
+        gui.setWeaponSelector1(player1.projectiles);
+        gui.setWeaponSelector2(player1.projectiles);
     }
 
     @Override
