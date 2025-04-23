@@ -38,16 +38,17 @@ public class Main extends ApplicationAdapter {
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
         //projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX()  , (float) player1.getPosY() + player1.getHeight());
-        gui = new GUI(player1.projectiles[1]);
+        gui = new GUI(player1,player1);
         gui.setWeaponSelector1(player1.projectiles);
         gui.setWeaponSelector2(player1.projectiles);
     }
 
     @Override
     public void render() {
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1);
-
+        player1.fireAndUpdateProjectile(terrain);
         batch.begin();
         batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(terrain.terrainTexture, 0, 0);
@@ -59,38 +60,38 @@ public class Main extends ApplicationAdapter {
             , 1, 1,
             player1.angle * MathUtils.radiansToDegrees);
         batch.end();
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            player1.isFiring = true;
+        }
 
         gui.render();
         player1.playerMove();
-        player1.projectiles[1].setStartX((float) player1.getPosX());
-        player1.projectiles[1].setStartY((float) player1.getPosY());
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            gui.fire = true;
-        }
-            fireProjectile();
+        shapeRenderer.circle(player1.projectiles[player1.currentProjectile].getCurrentPositionX(),player1.projectiles[player1.currentProjectile].getCurrentPositionY(),10);// Draw the projectile
+          //  fireProjectile();
 
         shapeRenderer.end();
-        player1.projectiles[1].render(shapeRenderer);
+        player1.projectiles[player1.currentProjectile].render(shapeRenderer);
 
     }
 
-    public void fireProjectile(){
-        if(gui.fire) {//taking the fire bool from the gui class when the user click the launch button
-
-            player1.projectiles[1].update(Gdx.graphics.getDeltaTime()*13);
-            if (player1.projectiles[1].isOutOfBounds(terrain.getHeightMap())) {
-                player1.projectiles[1].reset();
-                gui.fire = false;
-                terrain.initizalizeTerrainPixmap(terrain.getHeightMap()); //Just recreating the terrain based on newly updated hjeight map
-                System.out.println("New projectile launched");
-            }
-            float drawX = player1.projectiles[1].getCurrentPositionX() ;
-            float drawY = player1.projectiles[1].getCurrentPositionY() ;
-            shapeRenderer.circle(drawX, drawY, 10);
-        }
-    }
+//    public void fireProjectile(){
+//        if(gui.fire) {//taking the fire bool from the gui class when the user click the launch button
+//
+//            player1.projectiles[1].update(Gdx.graphics.getDeltaTime()*13);
+//            if (player1.projectiles[1].isOutOfBounds(terrain.getHeightMap())) {
+//                player1.projectiles[1].reset();
+//                gui.fire = false;
+//                terrain.initizalizeTerrainPixmap(terrain.getHeightMap()); //Just recreating the terrain based on newly updated hjeight map
+//                System.out.println("New projectile launched");
+//            }
+//            float drawX = player1.projectiles[1].getCurrentPositionX() ;
+//            float drawY = player1.projectiles[1].getCurrentPositionY() ;
+//            shapeRenderer.circle(drawX, drawY, 10);
+//        }
+//    }
 
     @Override
     public void dispose() {

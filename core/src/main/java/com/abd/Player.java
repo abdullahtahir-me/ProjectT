@@ -20,6 +20,8 @@ public class Player {
     float angle;
     int slopePoints= 25;
     public int totalProjectiles=10;
+    Boolean isFiring = false;
+    int currentProjectile = 1;
 
     public Player(int posX, int width, int height,float speed, Texture picture,float[] heightMap) {
         this.posX = posX;
@@ -133,6 +135,23 @@ public class Player {
             System.out.println(projectiles[i].name);
         }
  }
+    public void fireAndUpdateProjectile(Terrain terrain){
+        projectiles[currentProjectile].setStartX(posX+ (float) width /2);
+        projectiles[currentProjectile].setStartY(posY+height);
+        if(isFiring) {//taking the fire bool from the gui class when the user click the launch button
+
+            projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime()*13);
+            if (projectiles[currentProjectile].isOutOfBounds(heightMap)) {
+                projectiles[currentProjectile].reset();
+                isFiring = false;
+                terrain.initizalizeTerrainPixmap(terrain.getHeightMap()); //Just recreating the terrain based on newly updated hjeight map
+                System.out.println("New projectile launched");
+            }
+
+
+
+        }
+    }
  public void dispose(){
         projectiles = null;
  }

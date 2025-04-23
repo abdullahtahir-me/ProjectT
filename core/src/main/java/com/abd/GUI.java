@@ -21,12 +21,20 @@ public class GUI {
     ProgressBar healthBar2;
     SelectBox<Projectile> weaponSelector1;
     SelectBox<Projectile> weaponSelector2;
-
+    Player player1;
+    Player player2;
     public boolean fire=false;
-    Projectile projectile;
+    //Projectile projectile;
 
-    public GUI(Projectile projectile) {
-        this.projectile = projectile;
+    public GUI(Player player1, Player player2) {
+        this.player1 =player1;
+        this.player2 =player2;
+
+
+
+        //this.projectile = projectile;
+
+
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skin/cleanCrispy/clean-crispy-ui.json"));
@@ -67,20 +75,20 @@ public class GUI {
                 int initialVelocity = (int)initialVelocitySlider.getValue();
                 System.out.println("Angle text: " + angle);
                 System.out.println("Velocity text: " + initialVelocity);
-                projectile.setAngleRadian(angle);
-                projectile.setInitialVelocity(initialVelocity);
-                fire=true;
+                player1.projectiles[player1.currentProjectile].setAngleRadian(angle);
+                player1.projectiles[player1.currentProjectile].setInitialVelocity(initialVelocity);
+                player1.isFiring=true;
             }
         });
 
         angleSlider.addListener(new ClickListener(){
             public void clicked(InputEvent e, float x, float y) {
-                projectile.trail=true;
+                player1.projectiles[player1.currentProjectile].trail=true;
             }
         });
         initialVelocitySlider.addListener(new ClickListener(){
             public void clicked(InputEvent e, float x, float y) {
-                projectile.trail=true;
+                player1.projectiles[player1.currentProjectile].trail=true;
             }
         });
 
@@ -107,10 +115,10 @@ public class GUI {
     }
 
     public void trailInitializer(){
-        if(angleSlider.isDragging()) projectile.trail=true;
-        else projectile.setAngleRadian(180-angleSlider.getValue());
-        if(initialVelocitySlider.isDragging()) projectile.trail=true;
-        else projectile.setInitialVelocity(initialVelocitySlider.getValue());
+        if(angleSlider.isDragging()) player1.projectiles[player1.currentProjectile].trail=true;
+        else player1.projectiles[player1.currentProjectile].setAngleRadian(180-angleSlider.getValue());
+        if(initialVelocitySlider.isDragging()) player1.projectiles[player1.currentProjectile].trail=true;
+        else player1.projectiles[player1.currentProjectile].setInitialVelocity(initialVelocitySlider.getValue());
     }
 
     public void render() {
