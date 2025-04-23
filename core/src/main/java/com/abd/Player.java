@@ -133,6 +133,9 @@ public class Player {
             System.out.println(projectiles[i].name);
         }
  }
+
+
+
  public void dispose(){
         projectiles = null;
  }

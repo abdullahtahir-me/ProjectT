@@ -1,11 +1,14 @@
 package com.abd;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+
+import java.security.Key;
 
 public class GUI {
 
@@ -57,7 +60,7 @@ public class GUI {
         weaponSelector2 = new SelectBox<>(skin);
         weaponSelector2.setSize(200, 40);
 
-        textButton = new TextButton("Submit",skin);
+        textButton = new TextButton("Fire",skin);
         textButton.setSize(200, 40);
 
         textButton.addListener(new ClickListener() {
@@ -93,32 +96,73 @@ public class GUI {
         table.add(weaponSelector1).expandY().left().top().pad(15);
         table.add(weaponSelector2).expandY().right().top().pad(15);
         table.row();
-        table.add(angleText).colspan(2).center().padBottom(15);
+        table.add(angleText).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(angleSlider).colspan(2).center().padBottom(15);
+        table.add(angleSlider).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(initialVelocityText).colspan(2).center().padBottom(15);
+        table.add(initialVelocityText).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(initialVelocitySlider).colspan(2).center().padBottom(15);
+        table.add(initialVelocitySlider).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(textButton).colspan(2).padBottom(20).expandX().center();
+        table.add(textButton).colspan(2).padBottom(20).expandX().left().padLeft(10);
         stage.addActor(table);
 
     }
 
+    
     public void trailInitializer(){
         if(angleSlider.isDragging()) projectile.trail=true;
         else projectile.setAngleRadian(180-angleSlider.getValue());
         if(initialVelocitySlider.isDragging()) projectile.trail=true;
         else projectile.setInitialVelocity(initialVelocitySlider.getValue());
+        updateAngle();
+        updateVelocity();
     }
 
     public void render() {
         stage.act(Gdx.graphics.getDeltaTime());
         trailInitializer();
+        //angleSelector(Input.Keys.UP,Input.Keys.DOWN);
         stage.draw();
     }
-
+    public void updateAngle(){
+        float angle = projectile.getAngleRadian();
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            if (angle<=180) {
+                projectile.trail = true;
+                angle += 1;
+                projectile.setAngleRadian(angle);
+                angleSlider.setValue(180 - angle);
+            }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+            if (angle>=0) {
+                projectile.trail = true;
+                angle -= 1;
+                projectile.setAngleRadian(angle);
+                angleSlider.setValue(180 - angle);
+            }
+        }
+    }
+    public void updateVelocity(){
+        float velocity = projectile.getInitialVelocity();
+        if(Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)){
+            if (velocity<=150) {
+                projectile.trail = true;
+                velocity += 1;
+                projectile.setInitialVelocity(velocity);
+                initialVelocitySlider.setValue(velocity);
+            }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)){
+            if (velocity>=0) {
+                projectile.trail = true;
+                velocity -= 1;
+                projectile.setInitialVelocity(velocity);
+                initialVelocitySlider.setValue(velocity);
+            }
+        }
+    }
     public void setWeaponSelector1(Projectile[] weapons) {
         weaponSelector1.setItems(weapons);
     }

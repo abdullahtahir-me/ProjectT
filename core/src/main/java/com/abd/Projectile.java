@@ -24,8 +24,14 @@ public class Projectile {
     public void setInitialVelocity(float initialVelocity) {
         this.initialVelocity = initialVelocity;
     }
+    public float getInitialVelocity() {
+        return initialVelocity;
+    }
     public void setAngleRadian(float angleDegrees) {
         this.angleRadian = (float)Math.toRadians(angleDegrees);
+    }
+    public float getAngleRadian() {
+        return (float) MathUtils.radiansToDegrees*angleRadian;
     }
 
     private float startX;
