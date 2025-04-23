@@ -48,7 +48,7 @@ public class GUI {
         initialVelocityText.setFontScale(1.5f);
         initialVelocityText.setSize(200, 40);
 
-        initialVelocitySlider = new Slider(0, 100, 1f, false, skin);
+        initialVelocitySlider = new Slider(0, 150, 1f, false, skin);
         initialVelocitySlider.setSize(200, 40);
         initialVelocitySlider.setValue(50);
 

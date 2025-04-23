@@ -1,6 +1,7 @@
 package com.abd;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Projectile {
     private final float G = 9.8f;
@@ -56,12 +57,14 @@ public class Projectile {
         totalTime += deltaTime;
     }
     public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
-
+        int error = 10;
         if (currentPositionY <0|| currentPositionX <=0 ||currentPositionX >= heightMap.length - 1) {
             return true;
+
         }
-        else if((int)heightMap[(int)currentPositionX]-10>=(int)currentPositionY){
+        else if((int)heightMap[(int)currentPositionX]-error>=(int)currentPositionY){
             System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
+            destroyTerrain(heightMap);
             return  true;
         }
         System.out.println("current position ("+currentPositionX + " , " + currentPositionY+" )");
@@ -103,5 +106,21 @@ public class Projectile {
         currentPositionX = 0;
         currentPositionY = 0;
         totalTime = 0;
+    }
+    public void destroyTerrain(float[] heightMap){
+        float destructionDampner = power; //
+        for (int i = (int)MathUtils.clamp(currentPositionX - power,1,heightMap.length-1); i < (int)(currentPositionX ); i++) {
+            heightMap[i] = heightMap[i] -(power-destructionDampner);
+            destructionDampner--;
+
+
+        }
+        destructionDampner = 0;
+        for (int i = (int)(currentPositionX); i <(int)MathUtils.clamp(currentPositionX + power,1,heightMap.length-1); i++) {
+            heightMap[i] = heightMap[i] -(power-destructionDampner);
+            destructionDampner++;
+
+
+        }
     }
 }

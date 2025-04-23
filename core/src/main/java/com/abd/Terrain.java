@@ -36,7 +36,7 @@ public class Terrain {
         return heightMap[index];
 
     }
-    
+
     public Terrain(int pixmapWidth, int PixmapHeight,float upperHeight ){
         this.pixmapWidth = pixmapWidth;
         this.PixmapHeight = PixmapHeight;
@@ -72,7 +72,7 @@ public class Terrain {
         generateHeightMap(heightMap,left,middle, randomDisplacement,roughness);//recursively generate height with points
         generateHeightMap(heightMap,middle,right, randomDisplacement,roughness);// The order is extremely important due to the break condiotion
     }
-    private void initizalizeTerrainPixmap(float[] heightMap){
+    public void initizalizeTerrainPixmap(float[] heightMap){
         terrainPixelMap = new Pixmap( pixmapWidth,  PixmapHeight, Pixmap.Format.RGBA8888);//THe A allows the storage of an alpha channel
         terrainPixelMap.setColor(0f, 0f, 255f, 0f);//Making the pixel map be first transperent
         terrainPixelMap.fill();
@@ -83,6 +83,9 @@ public class Terrain {
                 terrainPixelMap.drawPixel(i,j);
             }
         }
+        terrainTexture = new TextureRegion(new Texture(terrainPixelMap));
+
+        terrainTexture.flip(false,true);
 
     }
 }

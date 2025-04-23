@@ -1,5 +1,7 @@
 package com.abd;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -95,7 +97,7 @@ public class Player {
         this.heightMap = heightMap;
     }
 
- public void playerMove(Direction direction){ // Moves the player and sets his angle
+ public void playerMove(){ // Moves the player and sets his angle
         if(posX>=heightMap.length-width-1){//If the position of player is to the far right wrap him arround
             posX = 1;
         }
@@ -103,11 +105,11 @@ public class Player {
             posX = heightMap.length - width -2; // if the position is to the left wrap around the -2 is so it doesnt get stuck in a loop of movingg levft and right
         }
 
-        if(direction == Direction.RIGHT &&posX>=0&&posX < heightMap.length - width-1 ) {
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) &&posX>=0&&posX < heightMap.length - width-1 ) {
             posX+=speed;
             posY = (int) heightMap[posX];
         }
-        if(direction == Direction.LEFT &&posX>0&&posX < heightMap.length - width-1 ){
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) &&posX>0&&posX < heightMap.length - width-1 ){
             posX-=speed;
             posY = (int)heightMap[posX];
         }
@@ -121,11 +123,13 @@ public class Player {
             angle = MathUtils.atan(angle);
         }
 
+
  }
+
 
  public void initializeProjectiles(){
         for(int i = 0; i < totalProjectiles; i++){
-            projectiles[i] = new Projectile("Projectile"+i,10,45,30, (float) getPosX()  , (float) getPosY() + getHeight());
+            projectiles[i] = new Projectile("Projectile"+i,30,45,30, (float) getPosX()  , (float) getPosY() + getHeight());
             System.out.println(projectiles[i].name);
         }
  }

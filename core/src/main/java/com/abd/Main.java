@@ -46,6 +46,7 @@ public class Main extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1);
+
         batch.begin();
         batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(terrain.terrainTexture, 0, 0);
@@ -59,7 +60,7 @@ public class Main extends ApplicationAdapter {
         batch.end();
 
         gui.render();
-        player1.playerMove(Direction.LEFT);
+        player1.playerMove();
         player1.projectiles[1].setStartX((float) player1.getPosX());
         player1.projectiles[1].setStartY((float) player1.getPosY());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -76,6 +77,7 @@ public class Main extends ApplicationAdapter {
             player1.projectiles[1].update(Gdx.graphics.getDeltaTime()*13);
             if (player1.projectiles[1].isOutOfBounds(terrain.getHeightMap())) {
                 player1.projectiles[1].reset();
+                terrain.initizalizeTerrainPixmap(terrain.getHeightMap()); //Just recreating the terrain based on newly updated hjeight map
                 System.out.println("New projectile launched");
             }
             float drawX = player1.projectiles[1].getCurrentPositionX() ;
