@@ -15,14 +15,10 @@ import com.badlogic.gdx.math.MathUtils;
 public class Main extends ApplicationAdapter {
 
     ShapeRenderer shapeRenderer;
-    //Projectile projectile;
     GUI gui;
-
     private SpriteBatch batch;
     private Texture image;
-
     Texture skyBackground;
-
     Terrain terrain;
     Player player1;
 
@@ -37,7 +33,6 @@ public class Main extends ApplicationAdapter {
         int randomBackgroundChooser = MathUtils.random(1,60);
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
-        //projectile = new Projectile("Projectile 1",10,45,30, (float) player1.getPosX()  , (float) player1.getPosY() + player1.getHeight());
         gui = new GUI(player1,player1);
         gui.setWeaponSelector1(player1.projectiles);
         gui.setWeaponSelector2(player1.projectiles);
@@ -66,32 +61,12 @@ public class Main extends ApplicationAdapter {
 
         gui.render();
         player1.playerMove();
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.circle(player1.projectiles[player1.currentProjectile].getCurrentPositionX(),player1.projectiles[player1.currentProjectile].getCurrentPositionY(),10);// Draw the projectile
-          //  fireProjectile();
-
         shapeRenderer.end();
         player1.projectiles[player1.currentProjectile].render(shapeRenderer);
-
     }
-
-//    public void fireProjectile(){
-//        if(gui.fire) {//taking the fire bool from the gui class when the user click the launch button
-//
-//            player1.projectiles[1].update(Gdx.graphics.getDeltaTime()*13);
-//            if (player1.projectiles[1].isOutOfBounds(terrain.getHeightMap())) {
-//                player1.projectiles[1].reset();
-//                gui.fire = false;
-//                terrain.initizalizeTerrainPixmap(terrain.getHeightMap()); //Just recreating the terrain based on newly updated hjeight map
-//                System.out.println("New projectile launched");
-//            }
-//            float drawX = player1.projectiles[1].getCurrentPositionX() ;
-//            float drawY = player1.projectiles[1].getCurrentPositionY() ;
-//            shapeRenderer.circle(drawX, drawY, 10);
-//        }
-//    }
 
     @Override
     public void dispose() {

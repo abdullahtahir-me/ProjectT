@@ -24,17 +24,10 @@ public class GUI {
     SelectBox<Projectile> weaponSelector2;
     Player player1;
     Player player2;
-    public boolean fire=false;
-    //Projectile projectile;
 
     public GUI(Player player1, Player player2) {
         this.player1 =player1;
         this.player2 =player2;
-
-
-
-        //this.projectile = projectile;
-
 
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
@@ -66,7 +59,7 @@ public class GUI {
         weaponSelector2 = new SelectBox<>(skin);
         weaponSelector2.setSize(200, 40);
 
-        textButton = new TextButton("Submit",skin);
+        textButton = new TextButton("Fire",skin);
         textButton.setSize(200, 40);
 
         textButton.addListener(new ClickListener() {

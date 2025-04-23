@@ -38,7 +38,6 @@ public class Player {
     public int getPosX() {
         return posX;
     }
-
     public void setPosX(int posX) {
         this.posX = posX;
     }
@@ -46,7 +45,6 @@ public class Player {
     public float getAngle() {
         return angle;
     }
-
     public void setAngle(float angle) {
         this.angle = angle;
     }
@@ -54,7 +52,6 @@ public class Player {
     public int getPosY() {
         return posY;
     }
-
     public void setPosY(int posY) {
         this.posY = posY;
     }
@@ -62,7 +59,6 @@ public class Player {
     public int getWidth() {
         return width;
     }
-
     public void setWidth(int width) {
         this.width = width;
     }
@@ -70,7 +66,6 @@ public class Player {
     public int getHeight() {
         return height;
     }
-
     public void setHeight(int height) {
         this.height = height;
     }
@@ -78,7 +73,6 @@ public class Player {
     public Texture getPicture() {
         return picture;
     }
-
     public void setPicture(Texture picture) {
         this.picture = picture;
     }
@@ -86,7 +80,6 @@ public class Player {
     public float getSpeed() {
         return speed;
     }
-
     public void setSpeed(float speed) {
         this.speed = speed;
     }
@@ -94,19 +87,17 @@ public class Player {
     public float[] getHeightMap() {
         return heightMap;
     }
-
     public void setHeightMap(float[] heightMap) {
         this.heightMap = heightMap;
     }
 
- public void playerMove(){ // Moves the player and sets his angle
+    public void playerMove(){ // Moves the player and sets his angle
         if(posX>=heightMap.length-width-1){//If the position of player is to the far right wrap him arround
             posX = 1;
         }
         else if(posX<= 0){
             posX = heightMap.length - width -2; // if the position is to the left wrap around the -2 is so it doesnt get stuck in a loop of movingg levft and right
         }
-
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) &&posX>=0&&posX < heightMap.length - width-1 ) {
             posX+=speed;
             posY = (int) heightMap[posX];
@@ -115,31 +106,25 @@ public class Player {
             posX-=speed;
             posY = (int)heightMap[posX];
         }
-            updateSlope();
-
- }
- public void updateSlope(){
-
+        updateSlope();
+    }
+    public void updateSlope(){
         if(posX>0&&posX < heightMap.length - width-1 - slopePoints ){
             angle = (heightMap[posX+slopePoints]-heightMap[posX])/(slopePoints);
             angle = MathUtils.atan(angle);
         }
+    }
 
-
- }
-
-
- public void initializeProjectiles(){
+    public void initializeProjectiles(){
         for(int i = 0; i < totalProjectiles; i++){
             projectiles[i] = new Projectile("Projectile"+i,30,45,30, (float) getPosX()  , (float) getPosY() + getHeight());
             System.out.println(projectiles[i].name);
         }
- }
+    }
     public void fireAndUpdateProjectile(Terrain terrain){
         projectiles[currentProjectile].setStartX(posX+ (float) width /2);
         projectiles[currentProjectile].setStartY(posY+height);
         if(isFiring) {
-
             projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime()*13);
             if (projectiles[currentProjectile].isOutOfBounds(heightMap)) {
                 projectiles[currentProjectile].reset();
@@ -147,12 +132,9 @@ public class Player {
                 terrain.initizalizeTerrainPixmap(terrain.getHeightMap()); //Just recreating the terrain based on newly updated hjeight map
                 System.out.println("New projectile launched");
             }
-
-
-
         }
     }
- public void dispose(){
+    public void dispose(){
         projectiles = null;
- }
+    }
 }

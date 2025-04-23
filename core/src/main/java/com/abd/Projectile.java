@@ -31,7 +31,7 @@ public class Projectile {
         this.angleRadian = (float)Math.toRadians(angleDegrees);
     }
     public float getAngleRadian() {
-        return (float) MathUtils.radiansToDegrees*angleRadian;
+        return MathUtils.radiansToDegrees*angleRadian;
     }
 
     private float startX;
@@ -78,7 +78,7 @@ public class Projectile {
 
         return false;//
     }
-// Code for the bullet trail now
+    // Code for the bullet trail now
     public float calculateFlightTime() {
         return  (float)(2*initialVelocity*Math.sin(angleRadian))/G;
     }
@@ -107,27 +107,21 @@ public class Projectile {
         return name +" Lvl: " + power;
     }
 
-
     public void reset(){
         currentPositionX = 0;
         currentPositionY = 0;
         totalTime = 0;
-
     }
     public void destroyTerrain(float[] heightMap){
         float destructionDampner = power; //
         for (int i = (int)MathUtils.clamp(currentPositionX - power,1,heightMap.length-1); i < (int)(currentPositionX ); i++) {
             heightMap[i] = heightMap[i] -(power-destructionDampner);
             destructionDampner--;
-
-
         }
         destructionDampner = 0;
         for (int i = (int)(currentPositionX); i <(int)MathUtils.clamp(currentPositionX + power,1,heightMap.length-1); i++) {
             heightMap[i] = heightMap[i] -(power-destructionDampner);
             destructionDampner++;
-
-
         }
     }
 }
