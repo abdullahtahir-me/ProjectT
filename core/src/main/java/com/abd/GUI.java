@@ -1,6 +1,7 @@
 package com.abd;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -101,15 +102,15 @@ public class GUI {
         table.add(weaponSelector1).expandY().left().top().pad(15);
         table.add(weaponSelector2).expandY().right().top().pad(15);
         table.row();
-        table.add(angleText).colspan(2).center().padBottom(15);
+        table.add(angleText).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(angleSlider).colspan(2).center().padBottom(15);
+        table.add(angleSlider).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(initialVelocityText).colspan(2).center().padBottom(15);
+        table.add(initialVelocityText).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(initialVelocitySlider).colspan(2).center().padBottom(15);
+        table.add(initialVelocitySlider).colspan(2).left().padBottom(15).padLeft(10);
         table.row();
-        table.add(textButton).colspan(2).padBottom(20).expandX().center();
+        table.add(textButton).colspan(2).padBottom(20).expandX().left().padLeft(10);
         stage.addActor(table);
 
     }
@@ -119,8 +120,47 @@ public class GUI {
         else player1.projectiles[player1.currentProjectile].setAngleRadian(180-angleSlider.getValue());
         if(initialVelocitySlider.isDragging()) player1.projectiles[player1.currentProjectile].trail=true;
         else player1.projectiles[player1.currentProjectile].setInitialVelocity(initialVelocitySlider.getValue());
+        updateAngle();
+        updateVelocity();
     }
-
+    public void updateAngle(){
+        float angle = player1.projectiles[player1.currentProjectile].getAngleRadian();
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            if (angle<=180) {
+                player1.projectiles[player1.currentProjectile].trail = true;
+                angle += 1;
+                player1.projectiles[player1.currentProjectile].setAngleRadian(angle);
+                angleSlider.setValue(180 - angle);
+            }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+            if (angle>=0) {
+                player1.projectiles[player1.currentProjectile].trail = true;
+                angle -= 1;
+                player1.projectiles[player1.currentProjectile].setAngleRadian(angle);
+                angleSlider.setValue(180 - angle);
+            }
+        }
+    }
+    public void updateVelocity(){
+        float velocity = player1.projectiles[player1.currentProjectile].getInitialVelocity();
+        if(Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)){
+            if (velocity<=150) {
+                player1.projectiles[player1.currentProjectile].trail = true;
+                velocity += 1;
+                player1.projectiles[player1.currentProjectile].setInitialVelocity(velocity);
+                initialVelocitySlider.setValue(velocity);
+            }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)){
+            if (velocity>=0) {
+                player1.projectiles[player1.currentProjectile].trail = true;
+                velocity -= 1;
+                player1.projectiles[player1.currentProjectile].setInitialVelocity(velocity);
+                initialVelocitySlider.setValue(velocity);
+            }
+        }
+    }
     public void render() {
         stage.act(Gdx.graphics.getDeltaTime());
         trailInitializer();

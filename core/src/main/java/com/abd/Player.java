@@ -138,7 +138,7 @@ public class Player {
     public void fireAndUpdateProjectile(Terrain terrain){
         projectiles[currentProjectile].setStartX(posX+ (float) width /2);
         projectiles[currentProjectile].setStartY(posY+height);
-        if(isFiring) {//taking the fire bool from the gui class when the user click the launch button
+        if(isFiring) {
 
             projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime()*13);
             if (projectiles[currentProjectile].isOutOfBounds(heightMap)) {
