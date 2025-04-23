@@ -21,21 +21,22 @@ public class Main extends ApplicationAdapter {
     Texture skyBackground;
     Terrain terrain;
     Player player1;
-
+    Player player2;
+    public  static int turn = 1;
 
     @Override
     public void create() {
         terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
-        player1 = new Player(500,25,25,1,new Texture("daniel.png"), terrain.getHeightMap());
-
+        player1 = new Player(500,50,50,1,new Texture("daniel.png"), terrain.getHeightMap());
+        player2 = new Player(1000,50,50,1,new Texture("uzma.png"), terrain.getHeightMap());
         int randomBackgroundChooser = MathUtils.random(1,60);
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
-        gui = new GUI(player1,player1);
+        gui = new GUI(player1,player2);
         gui.setWeaponSelector1(player1.projectiles);
-        gui.setWeaponSelector2(player1.projectiles);
+        gui.setWeaponSelector2(player2.projectiles);
     }
 
     @Override
@@ -44,28 +45,41 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         player1.fireAndUpdateProjectile(terrain);
+        player2.fireAndUpdateProjectile(terrain);
         batch.begin();
         batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(terrain.terrainTexture, 0, 0);
         batch.draw(
-            new TextureRegion(player1.getPicture())
+            new TextureRegion(player1.getPicture())     //Player 1
             , player1.getPosX(), player1.getPosY(),
             0, 0,
             player1.getWidth(), player1.getHeight()
             , 1, 1,
             player1.angle * MathUtils.radiansToDegrees);
+        batch.draw(
+            new TextureRegion(player2.getPicture())
+            , player2.getPosX(), player2.getPosY(),
+            0, 0,
+            player2.getWidth(), player2.getHeight()
+            , 1, 1,
+            player2.angle * MathUtils.radiansToDegrees);
         batch.end();
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            player1.isFiring = true;
+            if(turn ==0) player1.isFiring = true;
+            else player2.isFiring = true;
         }
 
         gui.render();
-        player1.playerMove();
+        if(turn ==0) player1.playerMove();
+        else player2.playerMove();
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.circle(player1.projectiles[player1.currentProjectile].getCurrentPositionX(),player1.projectiles[player1.currentProjectile].getCurrentPositionY(),10);// Draw the projectile
+        if(turn ==0) shapeRenderer.circle(player1.projectiles[player1.currentProjectile].getCurrentPositionX(),player1.projectiles[player1.currentProjectile].getCurrentPositionY(),10);// Draw the projectile
+        else shapeRenderer.circle(player2.projectiles[player2.currentProjectile].getCurrentPositionX(),player2.projectiles[player2.currentProjectile].getCurrentPositionY(),10);// Draw the projectile
         shapeRenderer.end();
-        player1.projectiles[player1.currentProjectile].render(shapeRenderer);
+        if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
+        else player2.projectiles[player2.currentProjectile].render(shapeRenderer);
     }
 
     @Override

@@ -129,6 +129,14 @@ public class Player {
             if (projectiles[currentProjectile].isOutOfBounds(heightMap)) {
                 projectiles[currentProjectile].reset();
                 isFiring = false;
+                if(Main.turn ==0){
+                    Main.turn =1;
+                } else if (Main.turn ==1) {
+                    Main.turn = 0;
+
+                }
+
+
                 terrain.initizalizeTerrainPixmap(terrain.getHeightMap()); //Just recreating the terrain based on newly updated hjeight map
                 System.out.println("New projectile launched");
             }
