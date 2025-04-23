@@ -109,7 +109,7 @@ public class GUI {
 
     }
 
-    
+
     public void trailInitializer(){
         if(angleSlider.isDragging()) projectile.trail=true;
         else projectile.setAngleRadian(180-angleSlider.getValue());
