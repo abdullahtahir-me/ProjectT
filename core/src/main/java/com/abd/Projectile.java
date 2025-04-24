@@ -9,8 +9,15 @@ public class Projectile {
     public boolean trail=false;
 
     private Texture texture;
-    private  float angleInRadian;
+    //private  float angleInRadian;
+    private float currentAngle;
+    public void setCurrentAngle(float currentAngle) {
+        this.currentAngle = currentAngle;
+    }
 
+    public float getCurrentAngle() {
+        return currentAngle;
+    }
 
     public String name;
     private float power;
@@ -44,7 +51,8 @@ public class Projectile {
         this.startY = startY;
     }
 
-    private float angleRadian;
+    private float initialAngleInRadian;  //used for the sin and cos function during whole trajectory so it should not be changed
+    private float initialAngleInDegree;  //used for the sin and cos function during whole trajectory so it should not be changed
     private float initialVelocity;
 
     public void setInitialVelocity(float initialVelocity) {
@@ -53,11 +61,21 @@ public class Projectile {
     public float getInitialVelocity() {
         return initialVelocity;
     }
-    public void setAngleRadian(float angleDegrees) {
-        this.angleRadian = (float)Math.toRadians(angleDegrees);
+    public void setInitialAngleInRadian(float angleInRadian) {
+        this.initialAngleInRadian = angleInRadian;
+        System.out.println(angleInRadian);
     }
-    public float getAngleRadian() {
-        return MathUtils.radiansToDegrees*angleRadian;
+    public float getInitialAngleInRadian() {
+        return initialAngleInRadian;
+    }
+    public void setInitialAngleInDegree(float angleInDegree) {
+        this.initialAngleInDegree = angleInDegree;
+        //System.out.println("Initial angle in degree in the setter: "+initialAngleInDegree);
+        initialAngleInRadian=((float) Math.toRadians(initialAngleInDegree));
+        //System.out.println("Initial angle in radian in the setter: "+initialAngleInRadian);
+    }
+    public float getInitialAngleInDegree() {
+        return initialAngleInDegree;
     }
 
 
@@ -78,7 +96,10 @@ public class Projectile {
     public Projectile(String name, float power, float angleDegree, float initialVelocity, float startX, float startY,int projectileWidth,int projectileHeight,Texture texture) {
         this.name = name;
         this.power = power;
-        this.angleRadian = (float) Math.toRadians(angleDegree);
+        this.initialAngleInDegree = angleDegree;
+        //System.out.println("Initial angle in degree in the constructor: "+initialAngleInDegree);
+        this.initialAngleInRadian = (float) Math.toRadians(this.initialAngleInDegree);
+        //System.out.println("Initial angle in radian in the constructor: "+initialAngleInRadian);
         this.initialVelocity = initialVelocity;
         this.startX = startX;
         this.startY = startY;
@@ -98,8 +119,8 @@ public class Projectile {
 
     private float totalTime = 0;
     public void update(float deltaTime) { // When it is called it fires and update projectile
-        currentPositionX = startX + (float) (initialVelocity * Math.cos(angleRadian)*totalTime);//x position at i elapsed time
-        currentPositionY = (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * totalTime)-(0.5*G*totalTime*totalTime));//y position at i elapsed time
+        currentPositionX = startX + (float) (initialVelocity * Math.cos(initialAngleInRadian)*totalTime);//x position at i elapsed time
+        currentPositionY = (float) (startY + (float) (initialVelocity * Math.sin(initialAngleInRadian) * totalTime)-(0.5*G*totalTime*totalTime));//y position at i elapsed time
         totalTime += deltaTime;
     }
     public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
@@ -120,13 +141,13 @@ public class Projectile {
     }
     // Code for the bullet trail now
     public float calculateFlightTime() {
-        return  (float)(2*initialVelocity*Math.sin(angleRadian))/G;
+        return  (float)(2*initialVelocity*Math.sin(initialAngleInRadian))/G;
     }
     public float calculateX(float time){
-        return (startX + (float) (initialVelocity * Math.cos(angleRadian)*time));
+        return (startX + (float) (initialVelocity * Math.cos(initialAngleInRadian)*time));
     }
     public float calculateY(float time){
-        return (float) (startY + (float) (initialVelocity * Math.sin(angleRadian) * time)-(0.5*G*time*time));
+        return (float) (startY + (float) (initialVelocity * Math.sin(initialAngleInRadian) * time)-(0.5*G*time*time));
     }
 
     public void render(ShapeRenderer shapeRenderer) {
@@ -141,6 +162,7 @@ public class Projectile {
             shapeRenderer.circle(calculateX(flightTime * 0.2f), calculateY(flightTime * 0.2f), 5);
             shapeRenderer.end();
         }
+        currentAngleCalculator();
     }
     @Override
     public String toString() {
@@ -163,5 +185,11 @@ public class Projectile {
             heightMap[i] = heightMap[i] -(power-destructionDampner);
             destructionDampner++;
         }
+    }
+
+    public void currentAngleCalculator(){
+        //float initialAngle = getAngleRadian();
+        //System.out.println(initialAngle);
+
     }
 }

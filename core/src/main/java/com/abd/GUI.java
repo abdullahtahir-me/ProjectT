@@ -71,7 +71,7 @@ public class GUI {
                 int initialVelocity = (int)initialVelocitySlider.getValue();
                 System.out.println("Angle text: " + angle);
                 System.out.println("Velocity text: " + initialVelocity);
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setAngleRadian(angle);
+                //players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(angle);
                 players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialVelocity(initialVelocity);
                 players[Main.turn].isFiring=true;
             }
@@ -112,19 +112,19 @@ public class GUI {
 
     public void trailInitializer(){
         if(angleSlider.isDragging()) players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail=true;
-        else players[Main.turn].projectiles[players[Main.turn].currentProjectile].setAngleRadian(180-angleSlider.getValue());
+        else players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(180-angleSlider.getValue());
         if(initialVelocitySlider.isDragging()) players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail=true;
         else players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialVelocity(initialVelocitySlider.getValue());
         updateAngle();
         updateVelocity();
     }
     public void updateAngle(){
-        float angle = players[Main.turn].projectiles[players[Main.turn].currentProjectile].getAngleRadian();
+        float angle = players[Main.turn].projectiles[players[Main.turn].currentProjectile].getInitialAngleInDegree();
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             if (angle<=180) {
                 players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail = true;
                 angle += 1;
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setAngleRadian(angle);
+                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(angle);
                 angleSlider.setValue(180 - angle);
             }
         }
@@ -132,7 +132,7 @@ public class GUI {
             if (angle>=0) {
                 players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail = true;
                 angle -= 1;
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setAngleRadian(angle);
+                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(angle);
                 angleSlider.setValue(180 - angle);
             }
         }

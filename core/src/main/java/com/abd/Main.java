@@ -78,7 +78,8 @@ public class Main extends ApplicationAdapter {
                 0, 0,
                 player1.projectiles[player1.currentProjectile].getProjectieWidth(),  player1.projectiles[player1.currentProjectile].getProjectieHeight(),
                 1, 1,
-                player1.projectiles[player1.currentProjectile].getAngleRadian()*MathUtils.radiansToDegrees);
+                player1.projectiles[player1.currentProjectile].getInitialAngleInDegree()
+            );
         }
         else{
             batch.draw(
@@ -87,7 +88,8 @@ public class Main extends ApplicationAdapter {
                 0, 0,
                 player2.projectiles[player2.currentProjectile].getProjectieWidth(),  player2.projectiles[player2.currentProjectile].getProjectieHeight(),
                 1, 1,
-                player2.projectiles[player2.currentProjectile].getAngleRadian()*MathUtils.radiansToDegrees);
+                player2.projectiles[player2.currentProjectile].getInitialAngleInDegree()
+            );
         }
         batch.end();
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
