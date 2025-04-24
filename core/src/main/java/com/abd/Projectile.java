@@ -1,5 +1,6 @@
 package com.abd;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -7,8 +8,33 @@ public class Projectile {
     private final float G = 9.8f;
     public boolean trail=false;
 
+    private Texture texture;
+    private  float angleInRadian;
+
+
     public String name;
     private float power;
+
+    private  int projectieWidth;
+
+    public int getProjectieWidth() {
+        return projectieWidth;
+    }
+
+    public void setProjectieWidth(int projectieWidth) {
+        this.projectieWidth = projectieWidth;
+    }
+
+    public int getProjectieHeight() {
+        return projectieHeight;
+    }
+
+    public void setProjectieHeight(int projectieHeight) {
+        this.projectieHeight = projectieHeight;
+    }
+
+    private  int projectieHeight;
+
 
     public void setStartX(float startX) {
         this.startX = startX;
@@ -34,6 +60,8 @@ public class Projectile {
         return MathUtils.radiansToDegrees*angleRadian;
     }
 
+
+
     private float startX;
     private float startY;
 
@@ -47,13 +75,25 @@ public class Projectile {
         return currentPositionY;
     }
 
-    public Projectile(String name, float power, float angleDegree, float initialVelocity, float startX, float startY) {
+    public Projectile(String name, float power, float angleDegree, float initialVelocity, float startX, float startY,int projectileWidth,int projectileHeight,Texture texture) {
         this.name = name;
         this.power = power;
         this.angleRadian = (float) Math.toRadians(angleDegree);
         this.initialVelocity = initialVelocity;
         this.startX = startX;
         this.startY = startY;
+        this.projectieWidth = projectileWidth;
+        this.projectieHeight = projectileHeight;
+        this.texture = texture;
+
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
     private float totalTime = 0;

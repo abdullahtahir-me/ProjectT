@@ -29,8 +29,8 @@ public class Main extends ApplicationAdapter {
         terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
-        player1 = new Player(500,50,50,1,new Texture("daniel.png"), terrain.getHeightMap());
-        player2 = new Player(1000,50,50,1,new Texture("uzma.png"), terrain.getHeightMap());
+        player1 = new Player(100,50,50,1,new Texture("player1.png"), terrain.getHeightMap());
+        player2 = new Player(1600,50,50,1,new Texture("player2.png"), terrain.getHeightMap());
         int randomBackgroundChooser = MathUtils.random(1,60);
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
@@ -41,6 +41,14 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
+            if (Gdx.graphics.isFullscreen()) {
+                Gdx.graphics.setWindowedMode(1280, 720);
+            } else {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
+        }
+
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -63,6 +71,24 @@ public class Main extends ApplicationAdapter {
             player2.getWidth(), player2.getHeight()
             , 1, 1,
             player2.angle * MathUtils.radiansToDegrees);
+        if(turn==0){
+            batch.draw(
+                new TextureRegion(player1.projectiles[player1.currentProjectile].getTexture())     //Player 1
+                , player1.projectiles[player1.currentProjectile].getCurrentPositionX(), player1.projectiles[player1.currentProjectile].getCurrentPositionY(),
+                0, 0,
+                player1.projectiles[player1.currentProjectile].getProjectieWidth(),  player1.projectiles[player1.currentProjectile].getProjectieHeight(),
+                1, 1,
+                player1.projectiles[player1.currentProjectile].getAngleRadian()*MathUtils.radiansToDegrees);
+        }
+        else{
+            batch.draw(
+                new TextureRegion(player2.projectiles[player1.currentProjectile].getTexture())     //Player 1
+                , player2.projectiles[player2.currentProjectile].getCurrentPositionX(), player2.projectiles[player2.currentProjectile].getCurrentPositionY(),
+                0, 0,
+                player2.projectiles[player2.currentProjectile].getProjectieWidth(),  player2.projectiles[player2.currentProjectile].getProjectieHeight(),
+                1, 1,
+                player2.projectiles[player2.currentProjectile].getAngleRadian()*MathUtils.radiansToDegrees);
+        }
         batch.end();
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             if(turn ==0) player1.isFiring = true;
@@ -75,8 +101,14 @@ public class Main extends ApplicationAdapter {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(1, 1, 1, 1);
-        if(turn ==0) shapeRenderer.circle(player1.projectiles[player1.currentProjectile].getCurrentPositionX(),player1.projectiles[player1.currentProjectile].getCurrentPositionY(),10);// Draw the projectile
-        else shapeRenderer.circle(player2.projectiles[player2.currentProjectile].getCurrentPositionX(),player2.projectiles[player2.currentProjectile].getCurrentPositionY(),10);// Draw the projectile
+
+
+
+//        if(turn ==0) shapeRenderer.rect(player1.projectiles[player1.currentProjectile].getCurrentPositionX()
+//            ,player1.projectiles[player1.currentProjectile].getCurrentPositionY()
+//            ,player1.projectiles[player1.currentProjectile].getProjectieWidth()
+//            ,player1.projectiles[player1.currentProjectile].getProjectieHeight());// Draw the projectile
+//        else shapeRenderer.rect(player2.projectiles[player2.currentProjectile].getCurrentPositionX(),player2.projectiles[player2.currentProjectile].getCurrentPositionY(),player2.projectiles[player2.currentProjectile].getProjectieWidth(),player2.projectiles[player2.currentProjectile].getProjectieHeight());// Draw the projectile
         shapeRenderer.end();
         if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
         else player2.projectiles[player2.currentProjectile].render(shapeRenderer);

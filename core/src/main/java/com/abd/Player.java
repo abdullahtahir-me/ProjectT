@@ -18,7 +18,7 @@ public class Player {
     Texture picture;
     float[] heightMap;
     float angle;
-    int slopePoints= 25;
+    int slopePoints= 50;
     public int totalProjectiles=10;
     Boolean isFiring = false;
     int currentProjectile = 1;
@@ -117,7 +117,7 @@ public class Player {
 
     public void initializeProjectiles(){
         for(int i = 0; i < totalProjectiles; i++){
-            projectiles[i] = new Projectile("Projectile"+i,30,45,30, (float) getPosX()  , (float) getPosY() + getHeight());
+            projectiles[i] = new Projectile("Projectile"+i,50,45,30, (float) getPosX()  , (float) getPosY() + getHeight(),30,25,new Texture("tank_bullet.png"));
             System.out.println(projectiles[i].name);
         }
     }
