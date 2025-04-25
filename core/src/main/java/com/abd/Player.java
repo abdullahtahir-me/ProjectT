@@ -126,6 +126,7 @@ public class Player {
         projectiles[currentProjectile].setStartY(posY+height);
         if(isFiring) {
             projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime()*13);
+
             if (projectiles[currentProjectile].isOutOfBounds(heightMap)) {
                 projectiles[currentProjectile].reset();
                 isFiring = false;
