@@ -187,9 +187,14 @@ public class Projectile {
         }
     }
 
-    public void currentAngleCalculator(){
-        //float initialAngle = getAngleRadian();
-        //System.out.println(initialAngle);
+    public float currentAngleCalculator(){
+        float initialAngle = getInitialAngleInDegree();
+        float totalChangeInAngle = (90-initialAngle)/calculateFlightTime();
+         currentAngle = initialAngle+totalChangeInAngle*totalTime;
+         if(totalTime>=calculateFlightTime()/2){
+             currentAngle = -currentAngle;
+         }
+         return  currentAngle;
 
     }
 }

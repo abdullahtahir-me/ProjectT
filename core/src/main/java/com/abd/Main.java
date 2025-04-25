@@ -75,20 +75,20 @@ public class Main extends ApplicationAdapter {
             batch.draw(
                 new TextureRegion(player1.projectiles[player1.currentProjectile].getTexture())     //Player 1
                 , player1.projectiles[player1.currentProjectile].getCurrentPositionX(), player1.projectiles[player1.currentProjectile].getCurrentPositionY(),
-                0, 0,
+                player1.projectiles[player1.currentProjectile].getProjectieWidth()/2f, player1.projectiles[player1.currentProjectile].getProjectieHeight()/2f,
                 player1.projectiles[player1.currentProjectile].getProjectieWidth(),  player1.projectiles[player1.currentProjectile].getProjectieHeight(),
                 1, 1,
-                player1.projectiles[player1.currentProjectile].getInitialAngleInDegree()
+               player1.projectiles[player1.currentProjectile].currentAngleCalculator()
             );
         }
         else{
             batch.draw(
                 new TextureRegion(player2.projectiles[player1.currentProjectile].getTexture())     //Player 1
                 , player2.projectiles[player2.currentProjectile].getCurrentPositionX(), player2.projectiles[player2.currentProjectile].getCurrentPositionY(),
-                0, 0,
+                player2.projectiles[player2.currentProjectile].getProjectieWidth()/2f, player2.projectiles[player2.currentProjectile].getProjectieHeight()/2f,
                 player2.projectiles[player2.currentProjectile].getProjectieWidth(),  player2.projectiles[player2.currentProjectile].getProjectieHeight(),
                 1, 1,
-                player2.projectiles[player2.currentProjectile].getInitialAngleInDegree()
+                player2.projectiles[player2.currentProjectile].currentAngleCalculator()
             );
         }
         batch.end();
