@@ -24,9 +24,7 @@ public class Main extends ApplicationAdapter {
     Terrain terrain;
     Player player1;
     Player player2;
-    Polygon player1Polygon;
-    Polygon player2Polygon;
-    Polygon projectilePolygon;
+
     public  static int turn = 1;
 
     @Override
@@ -46,14 +44,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
-            if (Gdx.graphics.isFullscreen()) {
-                Gdx.graphics.setWindowedMode(1280, 720);
-            } else {
-                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-            }
-        }
-
+        toogleFullScreen();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -62,73 +53,16 @@ public class Main extends ApplicationAdapter {
         batch.begin();
         batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(terrain.terrainTexture, 0, 0);
-        batch.draw(
-            new TextureRegion(player1.getPicture())     //Player 1
-            , player1.getPosX(), player1.getPosY(),
-            0, 0,
-            player1.getWidth(), player1.getHeight()
-            , 1, 1,
-            player1.angle * MathUtils.radiansToDegrees);
-        player1Polygon = new Polygon(new float[]{0,0, player1.getWidth(),0, player1.getWidth(),player1.getHeight(),0, player1.getHeight()});
-        player1Polygon.setPosition(player1.getPosX(), player1.getPosY());
-        player1Polygon.setRotation(player1.angle*MathUtils.radiansToDegrees);
-        batch.draw(
-            new TextureRegion(player2.getPicture())
-            , player2.getPosX(), player2.getPosY(),
-            0, 0,
-            player2.getWidth(), player2.getHeight()
-            , 1, 1,
-            player2.angle * MathUtils.radiansToDegrees);
-        player2Polygon = new Polygon(new float[]{0,0, player2.getWidth(),0, player2.getWidth(),player2.getHeight(),0, player2.getHeight()});
-        player2Polygon.setPosition(player2.getPosX(), player2.getPosY());
-        player2Polygon.setRotation(player2.angle*MathUtils.radiansToDegrees);
-        if(turn==0){
-            batch.draw(
-                new TextureRegion(player1.projectiles[player1.currentProjectile].getTexture())     //Player 1
-                , player1.projectiles[player1.currentProjectile].getCurrentPositionX(), player1.projectiles[player1.currentProjectile].getCurrentPositionY(),
-                player1.projectiles[player1.currentProjectile].getProjectieWidth()/2f, player1.projectiles[player1.currentProjectile].getProjectieHeight()/2f,
-                player1.projectiles[player1.currentProjectile].getProjectieWidth(),  player1.projectiles[player1.currentProjectile].getProjectieHeight(),
-                1, 1,
-               player1.projectiles[player1.currentProjectile].currentAngleCalculator()
-            );
-            projectilePolygon=new Polygon(new float[]{0,0,player1.projectiles[player1.currentProjectile].getProjectieWidth(),0,player1.projectiles[player1.currentProjectile].getProjectieWidth(),player1.projectiles[player1.currentProjectile].getProjectieHeight(),0,player1.projectiles[player1.currentProjectile].getProjectieHeight()});
-            projectilePolygon.setPosition(player1.projectiles[player1.currentProjectile].getCurrentPositionX(), player1.projectiles[player1.currentProjectile].getCurrentPositionY()+20);
-            projectilePolygon.setRotation(player1.projectiles[player1.currentProjectile].getCurrentAngle());
-            projectilePolygon.setOrigin(player1.projectiles[player1.currentProjectile].getProjectieWidth()/2f, player1.projectiles[player1.currentProjectile].getProjectieHeight()/2f);
-        }
-        else{
-            batch.draw(
-                new TextureRegion(player2.projectiles[player1.currentProjectile].getTexture())     //Player 1
-                , player2.projectiles[player2.currentProjectile].getCurrentPositionX(), player2.projectiles[player2.currentProjectile].getCurrentPositionY(),
-                player2.projectiles[player2.currentProjectile].getProjectieWidth()/2f, player2.projectiles[player2.currentProjectile].getProjectieHeight()/2f,
-                player2.projectiles[player2.currentProjectile].getProjectieWidth(),  player2.projectiles[player2.currentProjectile].getProjectieHeight(),
-                1, 1,
-                player2.projectiles[player2.currentProjectile].currentAngleCalculator()
-            );
-            projectilePolygon=new Polygon(new float[]{0,0,player2.projectiles[player2.currentProjectile].getProjectieWidth(),0,player2.projectiles[player2.currentProjectile].getProjectieWidth(),player2.projectiles[player2.currentProjectile].getProjectieHeight(),0,player2.projectiles[player2.currentProjectile].getProjectieHeight()});
-            projectilePolygon.setPosition(player2.projectiles[player2.currentProjectile].getCurrentPositionX(), player2.projectiles[player2.currentProjectile].getCurrentPositionY()+20);
-            projectilePolygon.setRotation(player2.projectiles[player2.currentProjectile].getCurrentAngle());
-            projectilePolygon.setOrigin(player2.projectiles[player2.currentProjectile].getProjectieWidth()/2f, player2.projectiles[player2.currentProjectile].getProjectieHeight()/2f);
-        }
         batch.end();
+
+        player1.render(batch);
+        player2.render(batch);
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             if(turn ==0) player1.isFiring = true;
             else player2.isFiring = true;
         }
-        if (Intersector.overlapConvexPolygons(player1Polygon, player2Polygon)){
-            System.out.println("collision detected between two points");
 
-        }
-        if (Intersector.overlapConvexPolygons(player1Polygon, projectilePolygon)){
-            System.out.println("collision detected between player1 and projectiles");
-            //dispose();
-            gui.healthBar1.setValue(100f);
-        }
-        if (Intersector.overlapConvexPolygons(player2Polygon, projectilePolygon)){
-            System.out.println("collision detected between player2 and projectiles");
-            //dispose();
-            gui.healthBar2.setValue(100f);
-        }
+        chkCollision(player1,player2);
 
         gui.render();
         if(turn ==0) player1.playerMove();
@@ -139,11 +73,6 @@ public class Main extends ApplicationAdapter {
 
 
 
-//        if(turn ==0) shapeRenderer.rect(player1.projectiles[player1.currentProjectile].getCurrentPositionX()
-//            ,player1.projectiles[player1.currentProjectile].getCurrentPositionY()
-//            ,player1.projectiles[player1.currentProjectile].getProjectieWidth()
-//            ,player1.projectiles[player1.currentProjectile].getProjectieHeight());// Draw the projectile
-//        else shapeRenderer.rect(player2.projectiles[player2.currentProjectile].getCurrentPositionX(),player2.projectiles[player2.currentProjectile].getCurrentPositionY(),player2.projectiles[player2.currentProjectile].getProjectieWidth(),player2.projectiles[player2.currentProjectile].getProjectieHeight());// Draw the projectile
         shapeRenderer.end();
         if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
         else player2.projectiles[player2.currentProjectile].render(shapeRenderer);
@@ -156,8 +85,65 @@ public class Main extends ApplicationAdapter {
         shapeRenderer.dispose();
         gui.dispose();
         player1.dispose();
+        player2.dispose();
+
     }
 
+    public void chkCollision(Player player1, Player player2) {
+        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.playerPolygon)){
+            System.out.println("collision detected between two points");
+        }
+        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player1.projectilePolygon)){
+            System.out.println("collision detected between player1 and projectiles");
+            //dispose();
+            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
+            else if(gui.healthBar1.getValue()==50f) dispose();
+            player1.projectiles[player1.currentProjectile].reset();
+            player1.isFiring = false;
+            if(turn ==0) turn=1;
+            else turn=0;
+        }
+        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player2.projectilePolygon)){
+            System.out.println("collision detected between player2 and projectiles");
+            //dispose();
+            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
+            else if (gui.healthBar2.getValue()==50f) dispose();
+            player2.projectiles[player2.currentProjectile].reset();
+            player2.isFiring = false;
+            if(turn ==0) turn=1;
+            else turn=0;
+        }
+        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.projectilePolygon)){
+            System.out.println("collision detected between player1 and projectiles");
+            //dispose();
+            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
+            else if(gui.healthBar1.getValue()==50f) dispose();
+            player2.projectiles[player2.currentProjectile].reset();
+            player2.isFiring = false;
+            if(turn ==0) turn=1;
+            else turn=0;
+        }
+        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player1.projectilePolygon)){
+            System.out.println("collision detected between player2 and projectiles");
+            //dispose();
+            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
+            else if (gui.healthBar2.getValue()==50f) dispose();
+            player1.projectiles[player1.currentProjectile].reset();
+            player1.isFiring = false;
+            if(turn ==0) turn=1;
+            else turn=0;
+        }
+    }
+
+    public void toogleFullScreen() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
+            if (Gdx.graphics.isFullscreen()) {
+                Gdx.graphics.setWindowedMode(1280, 720);
+            } else {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
+        }
+    }
     @Override
     public void resize(int width, int height) {
         // Resize viewport when window is resized

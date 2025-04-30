@@ -89,8 +89,8 @@ public class GUI {
         });
 
 
-        healthBar1.setValue(20f);
-        healthBar2.setValue(40f);
+        healthBar1.setValue(100f);
+        healthBar2.setValue(100f);
         table.add(healthBar1).expandX().left().top().pad(15);
         table.add(healthBar2).expandX().right().top().pad(15);
         table.row();

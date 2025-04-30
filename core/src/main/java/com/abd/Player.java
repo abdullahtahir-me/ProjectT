@@ -3,7 +3,10 @@ package com.abd;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 
 public class Player {
 
@@ -22,6 +25,9 @@ public class Player {
     public int totalProjectiles=10;
     Boolean isFiring = false;
     int currentProjectile = 1;
+
+    Polygon playerPolygon;
+    Polygon projectilePolygon;
 
     public Player(int posX, int width, int height,float speed, Texture picture,float[] heightMap) {
         this.posX = posX;
@@ -142,6 +148,43 @@ public class Player {
                 System.out.println("New projectile launched");
             }
         }
+    }
+    public void render(SpriteBatch batch){
+        drawPlayerAndPolygon(batch);
+        drawProjectiles(batch);
+    }
+
+    public void drawPlayerAndPolygon(SpriteBatch batch){
+        batch.begin();
+        batch.draw(
+            new TextureRegion(getPicture()),     //Player 1
+            getPosX(), getPosY(),
+            0, 0,
+            getWidth(), getHeight()
+            , 1, 1,
+            angle * MathUtils.radiansToDegrees
+        );
+        playerPolygon = new Polygon(new float[]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()});
+        playerPolygon.setPosition(getPosX(), getPosY());
+        playerPolygon.setRotation(angle*MathUtils.radiansToDegrees);
+        batch.end();
+    }
+
+    public void drawProjectiles(SpriteBatch batch){
+        batch.begin();
+        batch.draw(
+            new TextureRegion(projectiles[currentProjectile].getTexture()),     //Player 1
+            projectiles[currentProjectile].getCurrentPositionX(), projectiles[currentProjectile].getCurrentPositionY(),
+            projectiles[currentProjectile].getProjectieWidth()/2f, projectiles[currentProjectile].getProjectieHeight()/2f,
+            projectiles[currentProjectile].getProjectieWidth(),  projectiles[currentProjectile].getProjectieHeight(),
+            1, 1,
+            projectiles[currentProjectile].currentAngleCalculator()
+        );
+        projectilePolygon=new Polygon(new float[]{0, 0, projectiles[currentProjectile].getProjectieWidth(), 0, projectiles[currentProjectile].getProjectieWidth(), projectiles[currentProjectile].getProjectieHeight(), 0, projectiles[currentProjectile].getProjectieHeight()});
+        projectilePolygon.setPosition(projectiles[currentProjectile].getCurrentPositionX(), projectiles[currentProjectile].getCurrentPositionY()+20);
+        projectilePolygon.setRotation(projectiles[currentProjectile].getCurrentAngle());
+        projectilePolygon.setOrigin(projectiles[currentProjectile].getProjectieWidth()/2f, projectiles[currentProjectile].getProjectieHeight()/2f);
+        batch.end();
     }
     public void dispose(){
         projectiles = null;
