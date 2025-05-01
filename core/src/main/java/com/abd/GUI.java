@@ -158,6 +158,29 @@ public  class GUI {
     }
     public void render() {
         stage.act(Gdx.graphics.getDeltaTime());
+        float health1 = players[0].getHealth();
+        float health2 = players[1].getHealth();
+
+       //Update Health bar
+        healthBar1.setValue(health1);
+        healthBar2.setValue(health2);
+        //temporary Game over screen created by chat gpt @Abdullah tahir please later add it
+        // Check for game over
+        if (health1 <= 0 || health2 <= 0) {
+            // Clear existing actors and show Game Over
+            stage.clear();
+            Table gameOverTable = new Table(skin);
+            gameOverTable.setFillParent(true);
+            String message = health1 <= 0 ? "Player 2 Wins!" : "Player 1 Wins!";
+            Label gameOverLabel = new Label("Game Over\n" + message, skin);
+            gameOverLabel.setFontScale(2f);
+            gameOverTable.add(gameOverLabel).center();
+            stage.addActor(gameOverTable);
+
+            stage.act(Gdx.graphics.getDeltaTime());
+            stage.draw();
+            return;
+        }
         trailInitializer();
         stage.draw();
     }
