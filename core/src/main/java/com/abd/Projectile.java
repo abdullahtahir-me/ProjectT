@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 
-public class Projectile {
+public class Projectile implements Collidable {
     private final float G = 9.8f;
     public boolean trail=false;
 
@@ -226,7 +227,7 @@ public class Projectile {
     public void collisionEffect(float[] heightMap){
 
     }
-    public void checkCollision(){
+    public void checkCollisionWithPlayer(Polygon Player){
 
     }
     public void drawProjectiles(SpriteBatch batch){
@@ -247,5 +248,23 @@ public class Projectile {
     }
     public void render(SpriteBatch batch) {
         drawProjectiles(batch);
+    }
+
+    @Override
+    public Polygon getPolygon() {
+        return projectilePolygon;
+    }
+
+    @Override
+    public void collisionEffect() {//will add more later.
+        reset();
+
+    }
+
+    @Override
+    public CollisionType getCollisionType() {
+        return CollisionType.PROJECTILE;
+
+
     }
 }

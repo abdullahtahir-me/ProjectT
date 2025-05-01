@@ -24,22 +24,26 @@ public class Main extends ApplicationAdapter {
     Terrain terrain;
     Player player1;
     Player player2;
-
+    CollisionManager collisionManager;
     public  static int turn = 1;
 
     @Override
     public void create() {
+
         terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
-        player1 = new Player(100,50,50,1,new Texture("player1.png"), terrain.getHeightMap());
-        player2 = new Player(1600,50,50,1,new Texture("player2.png"), terrain.getHeightMap());
+        player1 = new Player(100,50,50,1,new Texture("player1.png"), terrain.getHeightMap(),100);
+        player2 = new Player(1600,50,50,1,new Texture("player2.png"), terrain.getHeightMap(),100);
         int randomBackgroundChooser = MathUtils.random(1,60);
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
         gui = new GUI(player1,player2);
         gui.setWeaponSelector1(player1.projectiles);
         gui.setWeaponSelector2(player2.projectiles);
+        collisionManager = new CollisionManager(player1,player2);
+
+
     }
 
     @Override
@@ -59,12 +63,19 @@ public class Main extends ApplicationAdapter {
         player1.projectiles[player1.currentProjectile].drawProjectiles(batch);
         player2.render(batch);
         player2.projectiles[player2.currentProjectile].drawProjectiles(batch);
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            if(turn ==0) player1.isFiring = true;
-            else player2.isFiring = true;
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)&&!(player1.isFiring|| player2.isFiring)) {
+            if(turn ==0) {
+                collisionManager.collisionObjects.add(player1.projectiles[player1.currentProjectile]);
+                player1.isFiring = true;
+            }
+            else {
+
+                collisionManager.collisionObjects.add(player2.projectiles[player2.currentProjectile]);
+                player2.isFiring = true;
+            }
         }
 
-        chkCollision(player1,player2);
+        //chkCollision(player1,player2);
 
         gui.render();
         if(turn ==0) player1.playerMove();
@@ -78,6 +89,7 @@ public class Main extends ApplicationAdapter {
         shapeRenderer.end();
         if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
         else player2.projectiles[player2.currentProjectile].render(shapeRenderer);
+        collisionManager.manageAndUpdateCollisions();
     }
 
     @Override
@@ -91,51 +103,51 @@ public class Main extends ApplicationAdapter {
 
     }
 
-    public void chkCollision(Player player1, Player player2) {
-        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.playerPolygon)){
-            System.out.println("collision detected between two points");
-        }
-        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
-            System.out.println("collision detected between player1 and projectiles");
-            //dispose();
-            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
-            else if(gui.healthBar1.getValue()==50f) dispose();
-            player1.projectiles[player1.currentProjectile].reset();
-            player1.isFiring = false;
-            if(turn ==0) turn=1;
-            else turn=0;
-        }
-        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
-            System.out.println("collision detected between player2 and projectiles");
-            //dispose();
-            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
-            else if (gui.healthBar2.getValue()==50f) dispose();
-            player2.projectiles[player2.currentProjectile].reset();
-            player2.isFiring = false;
-            if(turn ==0) turn=1;
-            else turn=0;
-        }
-        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
-            System.out.println("collision detected between player1 and projectiles");
-            //dispose();
-            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
-            else if(gui.healthBar1.getValue()==50f) dispose();
-            player2.projectiles[player2.currentProjectile].reset();
-            player2.isFiring = false;
-            if(turn ==0) turn=1;
-            else turn=0;
-        }
-        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
-            System.out.println("collision detected between player2 and projectiles");
-            //dispose();
-            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
-            else if (gui.healthBar2.getValue()==50f) dispose();
-            player1.projectiles[player1.currentProjectile].reset();
-            player1.isFiring = false;
-            if(turn ==0) turn=1;
-            else turn=0;
-        }
-    }
+//    public void chkCollision(Player player1, Player player2) {
+//        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.playerPolygon)){
+//            System.out.println("collision detected between two points");
+//        }
+//        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
+//            System.out.println("collision detected between player1 and projectiles");
+//            //dispose();
+////            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
+////            else if(gui.healthBar1.getValue()==50f) dispose();
+//            player1.projectiles[player1.currentProjectile].reset();
+//            player1.isFiring = false;
+//            if(turn ==0) turn=1;
+//            else turn=0;
+//        }
+//        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
+//            System.out.println("collision detected between player2 and projectiles");
+//            //dispose();
+////            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
+////            else if (gui.healthBar2.getValue()==50f) dispose();
+//            player2.projectiles[player2.currentProjectile].reset();
+//            player2.isFiring = false;
+//            if(turn ==0) turn=1;
+//            else turn=0;
+//        }
+//        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
+//            System.out.println("collision detected between player1 and projectiles");
+//            //dispose();
+////            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
+////            else if(gui.healthBar1.getValue()==50f) dispose();
+//            player2.projectiles[player2.currentProjectile].reset();
+//            player2.isFiring = false;
+//            if(turn ==0) turn=1;
+//            else turn=0;
+//        }
+//        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
+//            System.out.println("collision detected between player2 and projectiles");
+//            //dispose();
+////            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
+////            else if (gui.healthBar2.getValue()==50f) dispose();
+//            player1.projectiles[player1.currentProjectile].reset();
+//            player1.isFiring = false;
+//            if(turn ==0) turn=1;
+//            else turn=0;
+//        }
+//    }
 
     public void toogleFullScreen() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {

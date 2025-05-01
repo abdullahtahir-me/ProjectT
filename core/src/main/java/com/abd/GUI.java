@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-public class GUI {
+public  class GUI {
 
     Stage stage;
     Skin skin;
@@ -89,8 +89,8 @@ public class GUI {
         });
 
 
-        healthBar1.setValue(100f);
-        healthBar2.setValue(100f);
+        healthBar1.setValue(player1.getHealth());
+        healthBar2.setValue(player2.getHealth());
         table.add(healthBar1).expandX().left().top().pad(15);
         table.add(healthBar2).expandX().right().top().pad(15);
         table.row();

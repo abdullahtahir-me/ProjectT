@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 
-public class Player {
+import static com.abd.Main.turn;
+
+public class Player implements Collidable {
 
     Projectile[] projectiles;
 
@@ -17,6 +19,7 @@ public class Player {
     private int width;
     private int height;
     private float speed;
+    public float health;
 
     Texture picture;
     float[] heightMap;
@@ -27,9 +30,9 @@ public class Player {
     int currentProjectile = 1;
 
     Polygon playerPolygon;
-   // Polygon projectilePolygon;
+    // Polygon projectilePolygon;
 
-    public Player(int posX, int width, int height, float speed, Texture picture, float[] heightMap) {
+    public Player(int posX, int width, int height, float speed, Texture picture, float[] heightMap, float health) {
         this.posX = posX;
         this.posY = (int) (heightMap[this.posX]);
         this.width = width;
@@ -40,7 +43,16 @@ public class Player {
         projectiles = new Projectile[totalProjectiles];
         initializeProjectiles();
         playerPolygon = new Polygon(new float[]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()});
+        this.health = health;
 
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
     }
 
     public int getPosX() {
@@ -133,14 +145,14 @@ public class Player {
 
     public void initializeProjectiles() {
         for (int i = 0; i < totalProjectiles; i++) {
-            projectiles[i] = new Projectile("Projectile" + i, 50, 45, 30, (float) getPosX(), (float) getPosY() + getHeight(), 30, 25, new Texture("tank_bullet.png"));
+            projectiles[i] = new Projectile("Projectile" + i, 50, 45, 30, 0, 0, 30, 25, new Texture("tank_bullet.png"));
             System.out.println(projectiles[i].name);
         }
     }
 
     public void fireAndUpdateProjectile(Terrain terrain) {
-        projectiles[currentProjectile].setStartX(posX + (float) width / 2);
-        projectiles[currentProjectile].setStartY(posY + height);
+        projectiles[currentProjectile].setStartX(posX + (float) width / 2 + 50);
+        projectiles[currentProjectile].setStartY(posY + height +50);
         if (isFiring) {
             projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime() * 13);
 
@@ -183,7 +195,31 @@ public class Player {
     }
 
 
-    public void dispose(){
+    public void dispose() {
         projectiles = null;
+    }
+
+    @Override
+    public Polygon getPolygon() {
+        return playerPolygon;
+    }
+
+    @Override
+    public void collisionEffect() {
+        health -= 50;
+        posX -= 10;
+        if (Main.turn == 0) {
+            Main.turn = 1;
+        } else if (Main.turn == 1) {
+            Main.turn = 0;
+
+        }
+
+
+    }
+
+    @Override
+    public CollisionType getCollisionType() {
+        return CollisionType.PLAYER;
     }
 }
