@@ -93,7 +93,7 @@ public class Main extends ApplicationAdapter {
         if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.playerPolygon)){
             System.out.println("collision detected between two points");
         }
-        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player1.projectilePolygon)){
+        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
             System.out.println("collision detected between player1 and projectiles");
             //dispose();
             if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
@@ -103,7 +103,7 @@ public class Main extends ApplicationAdapter {
             if(turn ==0) turn=1;
             else turn=0;
         }
-        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player2.projectilePolygon)){
+        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
             System.out.println("collision detected between player2 and projectiles");
             //dispose();
             if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
@@ -113,7 +113,7 @@ public class Main extends ApplicationAdapter {
             if(turn ==0) turn=1;
             else turn=0;
         }
-        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.projectilePolygon)){
+        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
             System.out.println("collision detected between player1 and projectiles");
             //dispose();
             if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
@@ -123,7 +123,7 @@ public class Main extends ApplicationAdapter {
             if(turn ==0) turn=1;
             else turn=0;
         }
-        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player1.projectilePolygon)){
+        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
             System.out.println("collision detected between player2 and projectiles");
             //dispose();
             if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);

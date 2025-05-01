@@ -21,15 +21,15 @@ public class Player {
     Texture picture;
     float[] heightMap;
     float angle;
-    int slopePoints= 50;
-    public int totalProjectiles=10;
+    int slopePoints = 50;
+    public int totalProjectiles = 10;
     Boolean isFiring = false;
     int currentProjectile = 1;
 
     Polygon playerPolygon;
-    Polygon projectilePolygon;
+   // Polygon projectilePolygon;
 
-    public Player(int posX, int width, int height,float speed, Texture picture,float[] heightMap) {
+    public Player(int posX, int width, int height, float speed, Texture picture, float[] heightMap) {
         this.posX = posX;
         this.posY = (int) (heightMap[this.posX]);
         this.width = width;
@@ -39,11 +39,14 @@ public class Player {
         this.heightMap = heightMap;
         projectiles = new Projectile[totalProjectiles];
         initializeProjectiles();
+        playerPolygon = new Polygon(new float[]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()});
 
     }
+
     public int getPosX() {
         return posX;
     }
+
     public void setPosX(int posX) {
         this.posX = posX;
     }
@@ -51,6 +54,7 @@ public class Player {
     public float getAngle() {
         return angle;
     }
+
     public void setAngle(float angle) {
         this.angle = angle;
     }
@@ -58,6 +62,7 @@ public class Player {
     public int getPosY() {
         return posY;
     }
+
     public void setPosY(int posY) {
         this.posY = posY;
     }
@@ -65,6 +70,7 @@ public class Player {
     public int getWidth() {
         return width;
     }
+
     public void setWidth(int width) {
         this.width = width;
     }
@@ -72,6 +78,7 @@ public class Player {
     public int getHeight() {
         return height;
     }
+
     public void setHeight(int height) {
         this.height = height;
     }
@@ -79,6 +86,7 @@ public class Player {
     public Texture getPicture() {
         return picture;
     }
+
     public void setPicture(Texture picture) {
         this.picture = picture;
     }
@@ -86,6 +94,7 @@ public class Player {
     public float getSpeed() {
         return speed;
     }
+
     public void setSpeed(float speed) {
         this.speed = speed;
     }
@@ -93,52 +102,54 @@ public class Player {
     public float[] getHeightMap() {
         return heightMap;
     }
+
     public void setHeightMap(float[] heightMap) {
         this.heightMap = heightMap;
     }
 
-    public void playerMove(){ // Moves the player and sets his angle
-        if(posX>=heightMap.length-width-1){//If the position of player is to the far right wrap him arround
+    public void playerMove() { // Moves the player and sets his angle
+        if (posX >= heightMap.length - width - 1) {//If the position of player is to the far right wrap him arround
             posX = 1;
+        } else if (posX <= 0) {
+            posX = heightMap.length - width - 2; // if the position is to the left wrap around the -2 is so it doesnt get stuck in a loop of movingg levft and right
         }
-        else if(posX<= 0){
-            posX = heightMap.length - width -2; // if the position is to the left wrap around the -2 is so it doesnt get stuck in a loop of movingg levft and right
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) &&posX>=0&&posX < heightMap.length - width-1 ) {
-            posX+=speed;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && posX >= 0 && posX < heightMap.length - width - 1) {
+            posX += speed;
             posY = (int) heightMap[posX];
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) &&posX>0&&posX < heightMap.length - width-1 ){
-            posX-=speed;
-            posY = (int)heightMap[posX];
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && posX > 0 && posX < heightMap.length - width - 1) {
+            posX -= speed;
+            posY = (int) heightMap[posX];
         }
         updateSlope();
     }
-    public void updateSlope(){
-        if(posX>0&&posX < heightMap.length - width-1 - slopePoints ){
-            angle = (heightMap[posX+slopePoints]-heightMap[posX])/(slopePoints);
+
+    public void updateSlope() {
+        if (posX > 0 && posX < heightMap.length - width - 1 - slopePoints) {
+            angle = (heightMap[posX + slopePoints] - heightMap[posX]) / (slopePoints);
             angle = MathUtils.atan(angle);
         }
     }
 
-    public void initializeProjectiles(){
-        for(int i = 0; i < totalProjectiles; i++){
-            projectiles[i] = new Projectile("Projectile"+i,50,45,30, (float) getPosX()  , (float) getPosY() + getHeight(),30,25,new Texture("tank_bullet.png"));
+    public void initializeProjectiles() {
+        for (int i = 0; i < totalProjectiles; i++) {
+            projectiles[i] = new Projectile("Projectile" + i, 50, 45, 30, (float) getPosX(), (float) getPosY() + getHeight(), 30, 25, new Texture("tank_bullet.png"));
             System.out.println(projectiles[i].name);
         }
     }
-    public void fireAndUpdateProjectile(Terrain terrain){
-        projectiles[currentProjectile].setStartX(posX+ (float) width /2);
-        projectiles[currentProjectile].setStartY(posY+height);
-        if(isFiring) {
-            projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime()*13);
 
-            if (projectiles[currentProjectile].isOutOfBounds(heightMap)) {
+    public void fireAndUpdateProjectile(Terrain terrain) {
+        projectiles[currentProjectile].setStartX(posX + (float) width / 2);
+        projectiles[currentProjectile].setStartY(posY + height);
+        if (isFiring) {
+            projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime() * 13);
+
+            if (projectiles[currentProjectile].isOutOfBounds(heightMap) || projectiles[currentProjectile].hasCollidedWithTerrain(heightMap)) {
                 projectiles[currentProjectile].reset();
                 isFiring = false;
-                if(Main.turn ==0){
-                    Main.turn =1;
-                } else if (Main.turn ==1) {
+                if (Main.turn == 0) {
+                    Main.turn = 1;
+                } else if (Main.turn == 1) {
                     Main.turn = 0;
 
                 }
@@ -149,12 +160,13 @@ public class Player {
             }
         }
     }
-    public void render(SpriteBatch batch){
+
+    public void render(SpriteBatch batch) {
         drawPlayerAndPolygon(batch);
-        drawProjectiles(batch);
+        projectiles[currentProjectile].drawProjectiles(batch);
     }
 
-    public void drawPlayerAndPolygon(SpriteBatch batch){
+    public void drawPlayerAndPolygon(SpriteBatch batch) {
         batch.begin();
         batch.draw(
             new TextureRegion(getPicture()),     //Player 1
@@ -164,28 +176,13 @@ public class Player {
             , 1, 1,
             angle * MathUtils.radiansToDegrees
         );
-        playerPolygon = new Polygon(new float[]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()});
+
         playerPolygon.setPosition(getPosX(), getPosY());
-        playerPolygon.setRotation(angle*MathUtils.radiansToDegrees);
+        playerPolygon.setRotation(angle * MathUtils.radiansToDegrees);
         batch.end();
     }
 
-    public void drawProjectiles(SpriteBatch batch){
-        batch.begin();
-        batch.draw(
-            new TextureRegion(projectiles[currentProjectile].getTexture()),     //Player 1
-            projectiles[currentProjectile].getCurrentPositionX(), projectiles[currentProjectile].getCurrentPositionY(),
-            projectiles[currentProjectile].getProjectieWidth()/2f, projectiles[currentProjectile].getProjectieHeight()/2f,
-            projectiles[currentProjectile].getProjectieWidth(),  projectiles[currentProjectile].getProjectieHeight(),
-            1, 1,
-            projectiles[currentProjectile].currentAngleCalculator()
-        );
-        projectilePolygon=new Polygon(new float[]{0, 0, projectiles[currentProjectile].getProjectieWidth(), 0, projectiles[currentProjectile].getProjectieWidth(), projectiles[currentProjectile].getProjectieHeight(), 0, projectiles[currentProjectile].getProjectieHeight()});
-        projectilePolygon.setPosition(projectiles[currentProjectile].getCurrentPositionX(), projectiles[currentProjectile].getCurrentPositionY()+20);
-        projectilePolygon.setRotation(projectiles[currentProjectile].getCurrentAngle());
-        projectilePolygon.setOrigin(projectiles[currentProjectile].getProjectieWidth()/2f, projectiles[currentProjectile].getProjectieHeight()/2f);
-        batch.end();
-    }
+
     public void dispose(){
         projectiles = null;
     }

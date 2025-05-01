@@ -1,14 +1,18 @@
 package com.abd;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 
 public class Projectile {
     private final float G = 9.8f;
     public boolean trail=false;
 
-    private Texture texture;
+    private TextureRegion texture;
+    Polygon projectilePolygon;
     //private  float angleInRadian;
     private float currentAngle;
     public void setCurrentAngle(float currentAngle) {
@@ -105,15 +109,17 @@ public class Projectile {
         this.startY = startY;
         this.projectieWidth = projectileWidth;
         this.projectieHeight = projectileHeight;
-        this.texture = texture;
+        this.texture = new TextureRegion(texture);
+        projectilePolygon=new Polygon(new float[]{0, 0, getProjectieWidth(), 0, getProjectieWidth(),getProjectieHeight(), 0, getProjectieHeight()});
+
 
     }
 
-    public Texture getTexture() {
+    public TextureRegion getTexture() {
         return texture;
     }
 
-    public void setTexture(Texture texture) {
+    public void setTexture(TextureRegion texture) {
         this.texture = texture;
     }
 
@@ -123,9 +129,17 @@ public class Projectile {
         currentPositionY = (float) (startY + (float) (initialVelocity * Math.sin(initialAngleInRadian) * totalTime)-(0.5*G*totalTime*totalTime));//y position at i elapsed time
         totalTime += deltaTime;
     }
+    /**
+     * Checks whether the projectile has left the map
+     * <p>
+     * Out-of-bounds is detected if the projectile's current position is outside the
+     * horizontal or vertical limits of the height map.
+     * @param heightMap an array of float values representing the terrain height at each X coordinate
+     * @return true if the projectile is out of bounds or has collided with terrain; false otherwise
+     */
     public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
         int error = 10;
-        if (currentPositionY <0|| currentPositionX <=0 ||currentPositionX >= heightMap.length - 1) {
+        if (currentPositionY <0|| currentPositionX <=0 ||currentPositionX >= heightMap.length - 1) {//Checks whether the projectile has gone out pf the screen
             return true;
 
         }
@@ -196,5 +210,39 @@ public class Projectile {
          }
          return  currentAngle;
 
+    }
+//    Terrain collision is detected
+//    hen the projectile's Y position is at or below the terrain height (minus a small
+//     error margin) at its current X coordinate.
+    public boolean hasCollidedWithTerrain(float[] heightMap){
+        int error = 10;
+        if((int)heightMap[(int)currentPositionX]-error>=(int)currentPositionY){
+            System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
+            destroyTerrain(heightMap);
+            return  true;
+        }
+        return false;
+    }
+    public void collisionEffect(float[] heightMap){
+
+    }
+    public void checkCollision(){
+
+    }
+    public void drawProjectiles(SpriteBatch batch){
+        batch.begin();
+        batch.draw(
+            texture,     //Player 1
+           getCurrentPositionX(),getCurrentPositionY(),
+            getProjectieWidth()/2f, getProjectieHeight()/2f,
+           getProjectieWidth(),  getProjectieHeight(),
+            1, 1,
+           currentAngleCalculator()
+        );
+        projectilePolygon=new Polygon(new float[]{0, 0, getProjectieWidth(), 0, getProjectieWidth(), getProjectieHeight(), 0, getProjectieHeight()});
+        projectilePolygon.setPosition(getCurrentPositionX(), getCurrentPositionY()+20);
+        projectilePolygon.setRotation(getCurrentAngle());
+        projectilePolygon.setOrigin(getProjectieWidth()/2f, getProjectieHeight()/2f);
+        batch.end();
     }
 }
