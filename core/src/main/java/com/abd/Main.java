@@ -56,7 +56,9 @@ public class Main extends ApplicationAdapter {
         batch.end();
 
         player1.render(batch);
+        player1.projectiles[player1.currentProjectile].drawProjectiles(batch);
         player2.render(batch);
+        player2.projectiles[player2.currentProjectile].drawProjectiles(batch);
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             if(turn ==0) player1.isFiring = true;
             else player2.isFiring = true;

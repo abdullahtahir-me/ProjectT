@@ -163,7 +163,7 @@ public class Player {
 
     public void render(SpriteBatch batch) {
         drawPlayerAndPolygon(batch);
-        projectiles[currentProjectile].drawProjectiles(batch);
+        //projectiles[currentProjectile].drawProjectiles(batch);
     }
 
     public void drawPlayerAndPolygon(SpriteBatch batch) {

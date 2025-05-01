@@ -245,4 +245,7 @@ public class Projectile {
         projectilePolygon.setOrigin(getProjectieWidth()/2f, getProjectieHeight()/2f);
         batch.end();
     }
+    public void render(SpriteBatch batch) {
+        drawProjectiles(batch);
+    }
 }
