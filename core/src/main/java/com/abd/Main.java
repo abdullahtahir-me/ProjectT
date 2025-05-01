@@ -33,8 +33,8 @@ public class Main extends ApplicationAdapter {
         terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
-        player1 = new Player(100,50,50,1,new Texture("player1.png"), terrain.getHeightMap(),100);
-        player2 = new Player(1600,50,50,1,new Texture("player2.png"), terrain.getHeightMap(),100);
+        player1 = new Player(Gdx.graphics.getWidth()/16,50*Gdx.graphics.getWidth()/1920,50*Gdx.graphics.getHeight()/1920,1,new Texture("player1.png"), terrain.getHeightMap(),100);
+        player2 = new Player((int)(Gdx.graphics.getWidth()/1.2),50*Gdx.graphics.getWidth()/1920,50*Gdx.graphics.getHeight()/1920,1,new Texture("player2.png"), terrain.getHeightMap(),100);
         int randomBackgroundChooser = MathUtils.random(1,60);
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
@@ -48,48 +48,49 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        toogleFullScreen();
+        try {
+            toogleFullScreen();
 
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        player1.fireAndUpdateProjectile(terrain);
-        player2.fireAndUpdateProjectile(terrain);
-        batch.begin();
-        batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(terrain.terrainTexture, 0, 0);
-        batch.end();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            player1.fireAndUpdateProjectile(terrain);
+            player2.fireAndUpdateProjectile(terrain);
+            batch.begin();
+            batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.draw(terrain.terrainTexture, 0, 0);
 
-        player1.render(batch);
-        player1.projectiles[player1.currentProjectile].drawProjectiles(batch);
-        player2.render(batch);
-        player2.projectiles[player2.currentProjectile].drawProjectiles(batch);
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)&&!(player1.isFiring|| player2.isFiring)) {
-            if(turn ==0) {
-                collisionManager.collisionObjects.add(player1.projectiles[player1.currentProjectile]);
-                player1.isFiring = true;
+            batch.end();
+            player1.render(batch);
+            player1.projectiles[player1.currentProjectile].drawProjectiles(batch);
+            player2.render(batch);
+            player2.projectiles[player2.currentProjectile].drawProjectiles(batch);
+            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)&&!(player1.isFiring|| player2.isFiring)) {
+                if(turn ==0) {
+                    collisionManager.collisionObjects.add(player1.projectiles[player1.currentProjectile]);
+                    player1.isFiring = true;
+                }
+                else {
+
+                    collisionManager.collisionObjects.add(player2.projectiles[player2.currentProjectile]);
+                    player2.isFiring = true;
+                }
             }
-            else {
 
-                collisionManager.collisionObjects.add(player2.projectiles[player2.currentProjectile]);
-                player2.isFiring = true;
-            }
+            //chkCollision(player1,player2);
+
+            gui.render();
+            if(turn ==0) player1.playerMove();
+            else player2.playerMove();
+            //This line of codes draw hitbox for the player and prjectiles
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);shapeRenderer.setColor(1, 1, 1, 1);shapeRenderer.polygon(player1.playerPolygon.getTransformedVertices());shapeRenderer.polygon(player2.playerPolygon.getTransformedVertices());shapeRenderer.polygon(player1.projectiles[player1.currentProjectile].projectilePolygon.getTransformedVertices());
+            shapeRenderer.polygon(player2.projectiles[player2.currentProjectile].projectilePolygon.getTransformedVertices());
+            shapeRenderer.end();
+            if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
+            else player2.projectiles[player2.currentProjectile].render(shapeRenderer);
+            collisionManager.manageAndUpdateCollisions();
+        } catch (Exception e) {
+            e.getStackTrace();
         }
-
-        //chkCollision(player1,player2);
-
-        gui.render();
-        if(turn ==0) player1.playerMove();
-        else player2.playerMove();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1, 1, 1, 1);
-
-
-
-        shapeRenderer.end();
-        if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
-        else player2.projectiles[player2.currentProjectile].render(shapeRenderer);
-        collisionManager.manageAndUpdateCollisions();
     }
 
     @Override

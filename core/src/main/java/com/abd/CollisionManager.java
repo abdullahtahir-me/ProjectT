@@ -36,6 +36,7 @@ public  class CollisionManager {
                         toRemove.add(collisionObjects.get(j));
                         //collisionObjects.remove(j);
                     }
+                    //Setting both the player and
                     Player player1 = (Player)collisionObjects.get(0);
                     player1.isFiring = false;
                     Player player2 = (Player)collisionObjects.get(1);

@@ -231,19 +231,20 @@ public class Projectile implements Collidable {
 
     }
     public void drawProjectiles(SpriteBatch batch){
+        int positionOffset = 10;//to prevent self collision
         batch.begin();
         batch.draw(
             texture,     //Player 1
-           getCurrentPositionX(),getCurrentPositionY(),
+           getCurrentPositionX(),getCurrentPositionY()+positionOffset,
             getProjectieWidth()/2f, getProjectieHeight()/2f,
            getProjectieWidth(),  getProjectieHeight(),
             1, 1,
            currentAngleCalculator()
         );
         projectilePolygon=new Polygon(new float[]{0, 0, getProjectieWidth(), 0, getProjectieWidth(), getProjectieHeight(), 0, getProjectieHeight()});
-        projectilePolygon.setPosition(getCurrentPositionX(), getCurrentPositionY()+20);
-        projectilePolygon.setRotation(getCurrentAngle());
+        projectilePolygon.setPosition(getCurrentPositionX(), getCurrentPositionY()+positionOffset);
         projectilePolygon.setOrigin(getProjectieWidth()/2f, getProjectieHeight()/2f);
+        projectilePolygon.setRotation(getCurrentAngle());
         batch.end();
     }
     public void render(SpriteBatch batch) {

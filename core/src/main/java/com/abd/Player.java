@@ -145,14 +145,14 @@ public class Player implements Collidable {
 
     public void initializeProjectiles() {
         for (int i = 0; i < totalProjectiles; i++) {
-            projectiles[i] = new Projectile("Projectile" + i, 50, 45, 30, 0, 0, 30, 25, new Texture("tank_bullet.png"));
+            projectiles[i] = new Projectile("Projectile" + i, 50, 45, 30, 0, 0, 30*Gdx.graphics.getWidth()/1920, 25*Gdx.graphics.getHeight()/1080, new Texture("tank_bullet.png"));
             System.out.println(projectiles[i].name);
         }
     }
 
     public void fireAndUpdateProjectile(Terrain terrain) {
-        projectiles[currentProjectile].setStartX(posX + (float) width / 2 + 50);
-        projectiles[currentProjectile].setStartY(posY + height +50);
+        projectiles[currentProjectile].setStartX(posX + (float) width / 2 );
+        projectiles[currentProjectile].setStartY(posY + height );
         if (isFiring) {
             projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime() * 13);
 
