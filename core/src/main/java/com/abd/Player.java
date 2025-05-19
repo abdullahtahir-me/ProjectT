@@ -42,7 +42,7 @@ public class Player implements Collidable {
         this.heightMap = heightMap;
         projectiles = new Projectile[totalProjectiles];
         initializeProjectiles();
-        playerPolygon = new Polygon(new float[]{0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()});
+        playerPolygon = new Polygon(new float[]{-10, 0, getWidth()+10, 0, getWidth()+10, getHeight()+20, -10, getHeight()+20});
         this.health = health;
 
     }
@@ -152,7 +152,7 @@ public class Player implements Collidable {
 
     public void fireAndUpdateProjectile(Terrain terrain) {
         projectiles[currentProjectile].setStartX(posX + (float) width / 2 );
-        projectiles[currentProjectile].setStartY(posY + height );
+        projectiles[currentProjectile].setStartY(posY + height +20);
         if (isFiring) {
             projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime() * 13);
 
