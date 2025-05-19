@@ -1,6 +1,8 @@
 package com.abd;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -112,6 +114,9 @@ public class Projectile implements Collidable {
         this.projectieHeight = projectileHeight;
         this.texture = new TextureRegion(texture);
         projectilePolygon=new Polygon(new float[]{0, 0, getProjectieWidth(), 0, getProjectieWidth(),getProjectieHeight(), 0, getProjectieHeight()});
+        explosion = new ParticleEffect();
+        explosion.load(Gdx.files.internal( "Particle Park Explosion.p"),Gdx.files.internal(""));
+        explosion.start();
 
 
     }
@@ -138,6 +143,7 @@ public class Projectile implements Collidable {
      * @param heightMap an array of float values representing the terrain height at each X coordinate
      * @return true if the projectile is out of bounds or has collided with terrain; false otherwise
      */
+    public ParticleEffect explosion;
     public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
         int error = 10;
         if (currentPositionY <0|| currentPositionX <=0 ||currentPositionX >= heightMap.length - 1) {//Checks whether the projectile has gone out pf the screen
@@ -147,6 +153,8 @@ public class Projectile implements Collidable {
         else if((int)heightMap[(int)currentPositionX]-error>=(int)currentPositionY){
             System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
             destroyTerrain(heightMap);
+            explosion.setPosition(currentPositionX, currentPositionY);
+            explosion.start();
             return  true;
         }
         System.out.println("current position ("+currentPositionX + " , " + currentPositionY+" )");
@@ -164,7 +172,13 @@ public class Projectile implements Collidable {
     public float calculateY(float time){
         return (float) (startY + (float) (initialVelocity * Math.sin(initialAngleInRadian) * time)-(0.5*G*time*time));
     }
+     float deltaTimeParticleEffect;
+    public void explosionRenderer(SpriteBatch batch){
 
+        deltaTimeParticleEffect = Gdx.graphics.getDeltaTime();
+        explosion.update(deltaTimeParticleEffect);
+        explosion.draw(batch);
+    }
     public void render(ShapeRenderer shapeRenderer) {
         if (trail) {
             float flightTime = calculateFlightTime();

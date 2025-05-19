@@ -175,6 +175,7 @@ public class Player implements Collidable {
 
     public void render(SpriteBatch batch) {
         drawPlayerAndPolygon(batch);
+
         //projectiles[currentProjectile].drawProjectiles(batch);
     }
 

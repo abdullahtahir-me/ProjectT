@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -32,6 +33,7 @@ public class Main implements Screen {
     public  static int turn = 1;
     public Music background;
     public Sound fire;
+
     @Override
     public void show() {
 
@@ -53,7 +55,6 @@ public class Main implements Screen {
         background.play();
         fire = Gdx.audio.newSound(Gdx.files.internal("fire1.mp3"));
 
-
     }
 
     @Override
@@ -68,12 +69,16 @@ public class Main implements Screen {
             batch.begin();
             batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             batch.draw(terrain.terrainTexture, 0, 0);
-
             batch.end();
+
             player1.render(batch);
             player1.projectiles[player1.currentProjectile].drawProjectiles(batch);
             player2.render(batch);
             player2.projectiles[player2.currentProjectile].drawProjectiles(batch);
+            batch.begin();
+            player1.projectiles[player1.currentProjectile].explosionRenderer(batch);
+            player2.projectiles[player2.currentProjectile].explosionRenderer(batch);
+            batch.end();
             if(Gdx.input.isKeyPressed(Input.Keys.SPACE)&&!(player1.isFiring|| player2.isFiring)) {
                 if(turn ==0) {
                     collisionManager.collisionObjects.add(player1.projectiles[player1.currentProjectile]);
