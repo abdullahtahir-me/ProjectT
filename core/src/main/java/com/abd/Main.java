@@ -17,10 +17,11 @@ import com.badlogic.gdx.math.Polygon;
 
 public class Main implements Screen {
     final MainGame game;
-    public Main(MainGame game) {
+    public int randomBackgroundChooser ;
+    public Main(MainGame game,int randomBackgroundChooser) {
         this.game = game;
+        this.randomBackgroundChooser=randomBackgroundChooser;
     }
-
     ShapeRenderer shapeRenderer;
     GUI gui;
     private SpriteBatch batch;
@@ -42,7 +43,7 @@ public class Main implements Screen {
         image = new Texture("libgdx.png");
         player1 = new Player(Gdx.graphics.getWidth()/16,50*Gdx.graphics.getWidth()/1920,50*Gdx.graphics.getHeight()/1920,1,new Texture("player1.png"), terrain.getHeightMap(),100);
         player2 = new Player((int)(Gdx.graphics.getWidth()/1.2),50*Gdx.graphics.getWidth()/1920,50*Gdx.graphics.getHeight()/1920,1,new Texture("player2.png"), terrain.getHeightMap(),100);
-        int randomBackgroundChooser = MathUtils.random(1,60);
+
         skyBackground = new Texture(String.format("60-Sky-gradiant-pack1/Sky_gradient_%d.png",randomBackgroundChooser));
         shapeRenderer = new ShapeRenderer();
         gui = new GUI(player1,player2);
