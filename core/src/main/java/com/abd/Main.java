@@ -82,7 +82,8 @@ public class Main extends ApplicationAdapter {
             if(turn ==0) player1.playerMove();
             else player2.playerMove();
             //This line of codes draw hitbox for the player and prjectiles
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);shapeRenderer.setColor(1, 1, 1, 1);shapeRenderer.polygon(player1.playerPolygon.getTransformedVertices());shapeRenderer.polygon(player2.playerPolygon.getTransformedVertices());shapeRenderer.polygon(player1.projectiles[player1.currentProjectile].projectilePolygon.getTransformedVertices());
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);shapeRenderer.setColor(1, 1, 1, 1);shapeRenderer.polygon(player1.playerPolygon.getTransformedVertices());shapeRenderer.polygon(player2.playerPolygon.getTransformedVertices());
+            shapeRenderer.polygon(player1.projectiles[player1.currentProjectile].projectilePolygon.getTransformedVertices());
             shapeRenderer.polygon(player2.projectiles[player2.currentProjectile].projectilePolygon.getTransformedVertices());
             shapeRenderer.end();
             if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
@@ -103,53 +104,6 @@ public class Main extends ApplicationAdapter {
         player2.dispose();
 
     }
-
-//    public void chkCollision(Player player1, Player player2) {
-//        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.playerPolygon)){
-//            System.out.println("collision detected between two points");
-//        }
-//        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
-//            System.out.println("collision detected between player1 and projectiles");
-//            //dispose();
-////            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
-////            else if(gui.healthBar1.getValue()==50f) dispose();
-//            player1.projectiles[player1.currentProjectile].reset();
-//            player1.isFiring = false;
-//            if(turn ==0) turn=1;
-//            else turn=0;
-//        }
-//        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
-//            System.out.println("collision detected between player2 and projectiles");
-//            //dispose();
-////            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
-////            else if (gui.healthBar2.getValue()==50f) dispose();
-//            player2.projectiles[player2.currentProjectile].reset();
-//            player2.isFiring = false;
-//            if(turn ==0) turn=1;
-//            else turn=0;
-//        }
-//        if (Intersector.overlapConvexPolygons(player1.playerPolygon, player2.projectiles[player2.currentProjectile].projectilePolygon)){
-//            System.out.println("collision detected between player1 and projectiles");
-//            //dispose();
-////            if(gui.healthBar1.getValue()==100f) gui.healthBar1.setValue(50f);
-////            else if(gui.healthBar1.getValue()==50f) dispose();
-//            player2.projectiles[player2.currentProjectile].reset();
-//            player2.isFiring = false;
-//            if(turn ==0) turn=1;
-//            else turn=0;
-//        }
-//        if (Intersector.overlapConvexPolygons(player2.playerPolygon, player1.projectiles[player1.currentProjectile].projectilePolygon)){
-//            System.out.println("collision detected between player2 and projectiles");
-//            //dispose();
-////            if(gui.healthBar2.getValue()==100f) gui.healthBar2.setValue(50f);
-////            else if (gui.healthBar2.getValue()==50f) dispose();
-//            player1.projectiles[player1.currentProjectile].reset();
-//            player1.isFiring = false;
-//            if(turn ==0) turn=1;
-//            else turn=0;
-//        }
-//    }
-
     public void toogleFullScreen() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
             if (Gdx.graphics.isFullscreen()) {
