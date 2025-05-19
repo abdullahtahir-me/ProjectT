@@ -54,9 +54,6 @@ public class Terrain {
         }
         initizalizeTerrainPixmap(heightMap);//Creates a terrain based on the height map
 
-
-
-
         terrainTexture = new TextureRegion(new Texture(terrainPixelMap));
 
         terrainTexture.flip(false,true);

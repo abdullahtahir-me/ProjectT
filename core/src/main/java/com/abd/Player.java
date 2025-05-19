@@ -24,7 +24,7 @@ public class Player implements Collidable {
     Texture picture;
     float[] heightMap;
     float angle;
-    int slopePoints = 50;
+    int slopePoints = 25;
     public int totalProjectiles = 10;
     Boolean isFiring = false;
     int currentProjectile = 1;

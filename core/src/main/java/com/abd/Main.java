@@ -1,8 +1,11 @@
 package com.abd;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,7 +29,8 @@ public class Main extends ApplicationAdapter {
     Player player2;
     CollisionManager collisionManager;
     public  static int turn = 1;
-
+    public Music background;
+    public Sound fire;
     @Override
     public void create() {
 
@@ -42,6 +46,11 @@ public class Main extends ApplicationAdapter {
         gui.setWeaponSelector1(player1.projectiles);
         gui.setWeaponSelector2(player2.projectiles);
         collisionManager = new CollisionManager(player1,player2);
+        background = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
+        background.setLooping(true);
+        background.setVolume(0.3f);  // lower volume for ambience
+        background.play();
+        fire = Gdx.audio.newSound(Gdx.files.internal("fire1.mp3"));
 
 
     }
@@ -68,11 +77,13 @@ public class Main extends ApplicationAdapter {
                 if(turn ==0) {
                     collisionManager.collisionObjects.add(player1.projectiles[player1.currentProjectile]);
                     player1.isFiring = true;
+                    fire.play(0.2f);
                 }
                 else {
 
                     collisionManager.collisionObjects.add(player2.projectiles[player2.currentProjectile]);
                     player2.isFiring = true;
+                    fire.play(0.2f);
                 }
             }
 
@@ -102,6 +113,7 @@ public class Main extends ApplicationAdapter {
         gui.dispose();
         player1.dispose();
         player2.dispose();
+        background.dispose();
 
     }
     public void toogleFullScreen() {
