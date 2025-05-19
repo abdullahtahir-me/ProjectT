@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 
-import static com.abd.Main.turn;
+import static com.abd.GameScreen.turn;
 
 public class Player implements Collidable {
 
@@ -159,10 +159,10 @@ public class Player implements Collidable {
             if (projectiles[currentProjectile].isOutOfBounds(heightMap) || projectiles[currentProjectile].hasCollidedWithTerrain(heightMap)) {
                 projectiles[currentProjectile].reset();
                 isFiring = false;
-                if (Main.turn == 0) {
-                    Main.turn = 1;
-                } else if (Main.turn == 1) {
-                    Main.turn = 0;
+                if (GameScreen.turn == 0) {
+                    GameScreen.turn = 1;
+                } else if (GameScreen.turn == 1) {
+                    GameScreen.turn = 0;
 
                 }
 
@@ -208,10 +208,10 @@ public class Player implements Collidable {
     public void collisionEffect() {
         health -= 50;
         posX -= 10;
-        if (Main.turn == 0) {
-            Main.turn = 1;
-        } else if (Main.turn == 1) {
-            Main.turn = 0;
+        if (GameScreen.turn == 0) {
+            GameScreen.turn = 1;
+        } else if (GameScreen.turn == 1) {
+            GameScreen.turn = 0;
 
         }
 

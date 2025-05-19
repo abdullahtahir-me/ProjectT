@@ -1,8 +1,6 @@
 package com.abd;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,7 +12,13 @@ import com.badlogic.gdx.math.Polygon;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 
-public class Main extends ApplicationAdapter {
+public class GameScreen implements Screen {
+
+    final Game game;
+
+    public GameScreen(Game game) {
+        this.game = game;
+    }
 
     ShapeRenderer shapeRenderer;
     GUI gui;
@@ -28,7 +32,7 @@ public class Main extends ApplicationAdapter {
     public  static int turn = 1;
 
     @Override
-    public void create() {
+    public void show() {
 
         terrain = new Terrain(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Gdx.graphics.getHeight()/1.5f);
         batch = new SpriteBatch();
@@ -47,7 +51,7 @@ public class Main extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         try {
             toogleFullScreen();
 
@@ -164,5 +168,11 @@ public class Main extends ApplicationAdapter {
         // Resize viewport when window is resized
         gui.resize(width, height);  // Automatically handles aspect ratio
     }
+    @Override
+    public void pause() {}
+    @Override
+    public void resume() {}
+    @Override
+    public void hide() {}
 
 }

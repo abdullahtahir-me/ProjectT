@@ -71,20 +71,20 @@ public  class GUI {
                 int initialVelocity = (int)initialVelocitySlider.getValue();
                 System.out.println("Angle text: " + angle);
                 System.out.println("Velocity text: " + initialVelocity);
-                //players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(angle);
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialVelocity(initialVelocity);
-                players[Main.turn].isFiring=true;
+                //players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialAngleInDegree(angle);
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialVelocity(initialVelocity);
+                players[GameScreen.turn].isFiring=true;
             }
         });
 
         angleSlider.addListener(new ClickListener(){
             public void clicked(InputEvent e, float x, float y) {
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail=true;
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail=true;
             }
         });
         initialVelocitySlider.addListener(new ClickListener(){
             public void clicked(InputEvent e, float x, float y) {
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail=true;
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail=true;
             }
         });
 
@@ -111,47 +111,47 @@ public  class GUI {
     }
 
     public void trailInitializer(){
-        if(angleSlider.isDragging()) players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail=true;
-        else players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(180-angleSlider.getValue());
-        if(initialVelocitySlider.isDragging()) players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail=true;
-        else players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialVelocity(initialVelocitySlider.getValue());
+        if(angleSlider.isDragging()) players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail=true;
+        else players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialAngleInDegree(180-angleSlider.getValue());
+        if(initialVelocitySlider.isDragging()) players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail=true;
+        else players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialVelocity(initialVelocitySlider.getValue());
         updateAngle();
         updateVelocity();
     }
     public void updateAngle(){
-        float angle = players[Main.turn].projectiles[players[Main.turn].currentProjectile].getInitialAngleInDegree();
+        float angle = players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].getInitialAngleInDegree();
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             if (angle<=180) {
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail = true;
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail = true;
                 angle += 1;
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(angle);
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialAngleInDegree(angle);
                 angleSlider.setValue(180 - angle);
             }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
             if (angle>=0) {
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail = true;
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail = true;
                 angle -= 1;
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialAngleInDegree(angle);
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialAngleInDegree(angle);
                 angleSlider.setValue(180 - angle);
             }
         }
     }
     public void updateVelocity(){
-        float velocity = players[Main.turn].projectiles[players[Main.turn].currentProjectile].getInitialVelocity();
+        float velocity = players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].getInitialVelocity();
         if(Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)){
             if (velocity<=150) {
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail = true;
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail = true;
                 velocity += 1;
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialVelocity(velocity);
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialVelocity(velocity);
                 initialVelocitySlider.setValue(velocity);
             }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)){
             if (velocity>=0) {
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].trail = true;
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].trail = true;
                 velocity -= 1;
-                players[Main.turn].projectiles[players[Main.turn].currentProjectile].setInitialVelocity(velocity);
+                players[GameScreen.turn].projectiles[players[GameScreen.turn].currentProjectile].setInitialVelocity(velocity);
                 initialVelocitySlider.setValue(velocity);
             }
         }
