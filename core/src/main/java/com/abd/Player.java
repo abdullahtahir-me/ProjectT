@@ -152,7 +152,7 @@ public class Player implements Collidable {
 
     public void fireAndUpdateProjectile(Terrain terrain) {
         projectiles[currentProjectile].setStartX(posX + (float) width / 2 );
-        projectiles[currentProjectile].setStartY(posY + height +20);
+        projectiles[currentProjectile].setStartY(posY + height +30);
         if (isFiring) {
             projectiles[currentProjectile].update(Gdx.graphics.getDeltaTime() * 13);
 
