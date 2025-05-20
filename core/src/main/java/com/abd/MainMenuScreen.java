@@ -58,6 +58,7 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(skyBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.batch.end();
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             game.setScreen(new Main(game,randomBackgroundChooser));
         }
