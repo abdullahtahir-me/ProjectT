@@ -145,17 +145,10 @@ public class Projectile implements Collidable {
      */
     public ParticleEffect explosion;
     public boolean isOutOfBounds(float[] heightMap) {//Return False means that character has not collided yet
-        int error = 10;
+
         if (currentPositionY <0|| currentPositionX <=0 ||currentPositionX >= heightMap.length - 1) {//Checks whether the projectile has gone out pf the screen
             return true;
 
-        }
-        else if((int)heightMap[(int)currentPositionX]-error>=(int)currentPositionY){
-            System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
-            destroyTerrain(heightMap);
-            explosion.setPosition(currentPositionX, currentPositionY);
-            explosion.start();
-            return  true;
         }
         System.out.println("current position ("+currentPositionX + " , " + currentPositionY+" )");
         System.out.println("current position at height map ("+heightMap[(int) currentPositionX]  );
@@ -234,6 +227,8 @@ public class Projectile implements Collidable {
         if((int)heightMap[(int)currentPositionX]-error>=(int)currentPositionY){
             System.out.println("collision detected at ("+currentPositionX + " , " + currentPositionY+" )");
             destroyTerrain(heightMap);
+            explosion.setPosition(currentPositionX, currentPositionY);
+            explosion.start();
             return  true;
         }
         return false;
