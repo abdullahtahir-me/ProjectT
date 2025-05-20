@@ -1,33 +1,147 @@
-# Game
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+# 🕹️ 2D Destructible Terrain Game
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+A 2D physics-based game built with **Java** and **libGDX**, featuring realistic **projectile mechanics**, **destructible terrain**, and **collision detection using heightmaps**. Inspired by classic artillery and sandbox games, this project blends physics, terrain manipulation, and creative gameplay.
 
-## Platforms
+---
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+## 🚧 Project Status
 
-## Gradle
+🚀 In active development  
+🧪 Alpha-level features being tested  
+🎯 Core mechanics implemented: terrain destruction, projectile dynamics, basic collision
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+---
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+## 🎮 Features
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+- 🧱 **Destructible Terrain**: Modify the terrain in real-time using explosions or tools.
+- 💣 **Projectile Physics**: Simulates trajectory, gravity, and collision using simple physics.
+- 🌄 **Heightmap Collision**: Terrain defined by a heightmap and used for physics interactions.
+- ⚙️ **libGDX Framework**: Cross-platform support for Desktop, Android, and HTML5.
+- 🎨 **Pixel-Based Terrain Rendering**: Smooth dynamic updates as the terrain changes.
+- 🔄 **Regenerating/Resettable Terrain**: Easily reloadable for testing or gameplay loops.
+
+---
+
+## 🛠️ Built With
+
+- **Java 8+**
+- **[libGDX](https://libgdx.com/)** – Game development framework
+- **Gradle** – Build automation
+
+---
+
+## 🧑‍💻 Getting Started
+
+### Prerequisites
+
+- Java JDK 8 or newer
+- [Gradle](https://gradle.org/install/)
+- Git (for cloning the repo)
+- libGDX setup (you can use the official [setup tool](https://libgdx.com/dev/setup/))
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/destructible-terrain-game.git
+cd destructible-terrain-game
+
+# Run the game
+./gradlew desktop:run
+```
+
+### Project Structure
+
+```
+.
+├── core/             # Core game logic (platform-agnostic)
+│   ├── Terrain/      # Terrain generation & modification
+│   ├── Physics/      # Projectile physics & collision logic
+│   └── Renderer/     # Rendering and asset loading
+├── desktop/          # Desktop launcher
+├── android/          # Android platform target (optional)
+├── assets/           # Textures, heightmaps, sound files
+└── build.gradle      # Gradle build configuration
+```
+
+---
+
+
+
+## 🧪 Testing
+
+You can run unit tests (if available) using:
+
+```bash
+./gradlew test
+```
+
+For rendering and physics tests, consider using an in-game debug mode or simulation log output.
+
+---
+
+## 🧠 Implementation Details
+
+### Destructible Terrain
+
+- Implemented using a 2D pixel grid or heightmap.
+- Projectiles subtract from terrain when colliding.
+- Terrain updated using a mask or brush (circular explosion).
+- Terrain stored as a Pixmap or texture array and re-rendered each frame.
+
+### Projectile Physics
+
+- Uses basic kinematics: `position += velocity * deltaTime`, `velocity += gravity * deltaTime`
+- Custom collision detection with terrain edge from heightmap or pixel data
+
+### Terrain Collision
+
+- Heightmap stored as an array of Y-values for each X-column
+- Projectiles compare their Y-position to the terrain height for collision detection
+- Optionally use Box2D polygon shapes for dynamic terrain representation
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Terrain destruction
+- [x] Heightmap-based collision
+- [x] Custom projectile physics
+- [x] Particle effects for explosions
+- [ ] Enemy AI / target bots
+- [ ] Scoring & game rounds
+- [ ] Multiplayer / hotseat mode
+- [ ] Mobile support (Android)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how:
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/something`
+3. Commit your changes: `git commit -am 'Add new feature'`
+4. Push to the branch: `git push origin feature/something`
+5. Submit a pull request
+
+Please include screenshots or videos for visual features!
+
+
+---
+
+## 📬 Contact
+
+**Abdullah Tahir** – [abdullahkbintahir@gmail.com](mailto:abdullahkbintahir@gmail.com)  
+**Abdul Rehman** – [abdulr098123@gmail.com](mailto:abdulr098123@gmail.com)  
+Project Link – [https://github.com/abdullahtahir-me/ProjectT](https://github.com/abdullahtahir-me/ProjectT)
+
+---
+
+## 🙏 Acknowledgments
+
+- [libGDX Community](https://discord.gg/libgdx)
+- Inspiration from **Worms**, **Pocket Tanks**, **Scorched Earth**, and **Terraria**
+- Thanks to all testers and contributors!
