@@ -52,6 +52,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        toogleFullScreen();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -70,10 +72,7 @@ public class MainMenuScreen implements Screen {
         stage.draw();
     }
 
-    @Override
-    public void resize(int width, int height) {
 
-    }
 
     @Override
     public void pause() {
@@ -96,4 +95,21 @@ public class MainMenuScreen implements Screen {
         stage.dispose();
         skin.dispose();
     }
+    public void toogleFullScreen() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
+            if (Gdx.graphics.isFullscreen()) {
+                Gdx.graphics.setWindowedMode(1280, 720);
+            } else {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
+        }
+    }
+    @Override
+    public void resize(int width, int height) {
+        // Resize viewport when window is resized
+//        gui.resize(width, height);  // Automatically handles aspect ratio
+    }
+
+
+
 }

@@ -245,7 +245,7 @@ public class Projectile implements Collidable {
 
     }
     public void drawProjectiles(SpriteBatch batch){
-        int positionOffset = 10;//to prevent self collision
+        int positionOffset = 15;//to prevent self collision
         batch.begin();
         batch.draw(
             texture,     //Player 1

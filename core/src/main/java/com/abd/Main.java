@@ -84,13 +84,13 @@ public class Main implements Screen {
                 if(turn ==0) {
                     collisionManager.collisionObjects.add(player1.projectiles[player1.currentProjectile]);
                     player1.isFiring = true;
-                    fire.play(0.2f);
+                    fire.play(0.3f);
                 }
                 else {
 
                     collisionManager.collisionObjects.add(player2.projectiles[player2.currentProjectile]);
                     player2.isFiring = true;
-                    fire.play(0.2f);
+                    fire.play(0.3f);
                 }
             }
 
@@ -100,10 +100,10 @@ public class Main implements Screen {
             if(turn ==0) player1.playerMove();
             else player2.playerMove();
             //This line of codes draw hitbox for the player and prjectiles
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);shapeRenderer.setColor(1, 1, 1, 1);shapeRenderer.polygon(player1.playerPolygon.getTransformedVertices());shapeRenderer.polygon(player2.playerPolygon.getTransformedVertices());
-            shapeRenderer.polygon(player1.projectiles[player1.currentProjectile].projectilePolygon.getTransformedVertices());
-            shapeRenderer.polygon(player2.projectiles[player2.currentProjectile].projectilePolygon.getTransformedVertices());
-            shapeRenderer.end();
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);shapeRenderer.setColor(1, 1, 1, 1);shapeRenderer.polygon(player1.playerPolygon.getTransformedVertices());shapeRenderer.polygon(player2.playerPolygon.getTransformedVertices());
+//            shapeRenderer.polygon(player1.projectiles[player1.currentProjectile].projectilePolygon.getTransformedVertices());
+//            shapeRenderer.polygon(player2.projectiles[player2.currentProjectile].projectilePolygon.getTransformedVertices());
+//            shapeRenderer.end();
             if(turn ==0) player1.projectiles[player1.currentProjectile].render(shapeRenderer);
             else player2.projectiles[player2.currentProjectile].render(shapeRenderer);
             collisionManager.manageAndUpdateCollisions();
